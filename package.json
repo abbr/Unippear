@@ -1,7 +1,17 @@
 {
-  "name": "workspace",
+  "name": "site-layout-service",
   "version": "0.0.0",
   "main": "server/app.js",
+  "license": "MIT",
+  "author": {
+    "name": "Fred"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/abbr/SiteLayoutService.git"
+  },
+  "homepage": "https://github.com/abbr/SiteLayoutService",
+  "keywords": ["website layout service","soa"]
   "dependencies": {
     "express": "~4.0.0",
     "morgan": "~1.0.0",
@@ -79,6 +89,5 @@
     "start": "node server/app.js",
     "test": "grunt test",
     "update-webdriver": "node node_modules/grunt-protractor-runner/node_modules/protractor/bin/webdriver-manager update"
-  },
-  "private": true
+  }
 }
