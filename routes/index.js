@@ -8,10 +8,10 @@ router.get('/index.js', function(req, res) {
     var recursive = require('recursive-readdir');
 
     // ignore files named 'foo.cs' or files that end in '.html'.
-    recursive('../public/js', function(err, files) {
+    recursive('../' + router.publicFolderNm + '/js', function(err, files) {
         // Files is an array of filename
         var relativeFiles = files.map(function(v) {
-            return v.substring(13).replace(/\.js$/,'');
+            return v.substring(router.publicFolderNm.length + 7).replace(/\.js$/, '');
         });
         var jsFiles = relativeFiles.join('","');
         res.render('index', {

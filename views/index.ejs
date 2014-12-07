@@ -1,4 +1,11 @@
-(function() { <% include require.js %>
+var _SiteLayoutService;
+
+function siteLayoutService(opts) {
+  opts.headerHtmlFragmentFile = 'html/header.html';
+  opts.footerHtmlFragmentFile = 'html/footer.html';
+  _SiteLayoutService = opts;
+
+  <% include require.js %>
     <% include jquery.js %>
     $.noConflict();
   jQuery(document).ready(function($) {
@@ -8,4 +15,4 @@
     baseUrl: "<%-currHost%>/js"
   });
   require(["<%-jsFiles%>"]);
-})();
+};
