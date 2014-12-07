@@ -1,10 +1,11 @@
 (function() { <% include require.js %>
     <% include jquery.js %>
-    require.config({
-      baseUrl: "<%-currHost%>/js"
-    });
-  require(["test"]);
-  $(function() {
+    $.noConflict();
+  jQuery(document).ready(function($) {
     $("#namex").append("f");
   });
+  require.config({
+    baseUrl: "<%-currHost%>/js"
+  });
+  require(["test"]);
 })(this);
