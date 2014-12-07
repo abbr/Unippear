@@ -1,1 +1,1 @@
-alert("here test");
+console.log("here test");

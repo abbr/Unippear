@@ -1,14 +1,10 @@
 (function() { <% include require.js %>
+    <% include jquery.js %>
     require.config({
       baseUrl: "<%-currHost%>/js"
     });
   require(["test"]);
-  //   var head = document.getElementsByTagName('head')[0];
-  // var script = document.createElement('script');
-  // script.type = 'text/javascript';
-  // script.onreadystatechange = function() {
-  //   // if (this.readyState == 'complete') { callFunctionFromScript(); }
-  // }
-  // script.src = '<%-currHost%>/js/test.js';
-  // head.appendChild(script);
+  $(function() {
+    $("#namex").append("f");
+  });
 })(this);
