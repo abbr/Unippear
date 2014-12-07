@@ -1,8 +1,8 @@
 var _SiteLayoutService;
 
 function siteLayoutService(opts) {
-  opts.headerHtmlFragmentFile = 'html/header.html';
-  opts.footerHtmlFragmentFile = 'html/footer.html';
+  opts.headerHtmlFragment = '<%-currHost%>/html/header.html';
+  opts.footerHtmlFragment = '<%-currHost%>/html/footer.html';
   _SiteLayoutService = opts;
 
   <% include require.js %>
@@ -10,6 +10,12 @@ function siteLayoutService(opts) {
     $.noConflict();
   jQuery(document).ready(function($) {
     $("#namex").append("f");
+    $.get(opts.headerHtmlFragment, function(data) {
+      $("body").prepend(data);
+    });
+    $.get(opts.footerHtmlFragment, function(data) {
+      $("body").append(data);
+    });
   });
   require.config({
     baseUrl: "<%-currHost%>/js"
