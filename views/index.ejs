@@ -16,6 +16,11 @@ function siteLayoutService(opts) {
     $.get(opts.footerHtmlFragment, function(data) {
       $("body").append(data);
     });
+
+    // download css
+    <% cssFiles.forEach(function(f) { %>
+      $('head').append('<link rel="stylesheet" href="<%=f%>">'); <%
+    }) %>
   });
   require.config({
     baseUrl: "<%-currHost%>/js"

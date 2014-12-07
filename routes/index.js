@@ -7,16 +7,23 @@ router.get('/index.js', function(req, res) {
 
     var recursive = require('recursive-readdir');
 
-    // ignore files named 'foo.cs' or files that end in '.html'.
     recursive('../' + router.publicFolderNm + '/js', function(err, files) {
         // Files is an array of filename
         var relativeFiles = files.map(function(v) {
             return v.substring(router.publicFolderNm.length + 7).replace(/\.js$/, '');
         });
         var jsFiles = relativeFiles.join('","');
-        res.render('index', {
-            currHost: req.protocol + "://" + req.host,
-            jsFiles: jsFiles
+
+        recursive('../' + router.publicFolderNm + '/css', function(err, files) {
+            // Files is an array of filename
+            var cssFiles = files.map(function(v) {
+                return req.protocol + "://" + req.host + v.substring(router.publicFolderNm.length + 3);
+            });
+            res.render('index', {
+                currHost: req.protocol + "://" + req.host,
+                jsFiles: jsFiles,
+                cssFiles: cssFiles
+            });
         });
     });
 });
