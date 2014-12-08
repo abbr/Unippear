@@ -16,7 +16,7 @@ router.get('/', function(req, res) {
         recursive('../' + router.publicFolderNm + '/static/css', function(err, files) {
             // Files is an array of filename
             var cssFiles = files.map(function(v) {
-                return req.protocol + "://" + req.host + v.substring(router.publicFolderNm.length + 10);
+                return req.protocol + "://" + req.host + v.substring(router.publicFolderNm.length + 10).replace(/\.ejs$/, '');
             });
             res.render('api/index', {
                 currHost: req.protocol + "://" + req.host,
