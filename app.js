@@ -30,6 +30,7 @@ app.use('/index.js', routes);
 app.use(function(req, res, next) {
     require('fs').exists(path.join(__dirname, routes.publicFolderNm, 'static', req.path + '.ejs'), function(exists) {
         if (exists) {
+            res.type(path.extname(req.path));
             res.render(path.join('static', req.path + '.ejs'), {
                 currHost: req.protocol + "://" + req.host
             });

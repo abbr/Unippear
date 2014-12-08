@@ -9,10 +9,9 @@ router.get('/', function(req, res) {
 
     recursive('../' + router.publicFolderNm + '/static/js', function(err, files) {
         // Files is an array of filename
-        var relativeFiles = files.map(function(v) {
-            return v.substring(router.publicFolderNm.length + 14).replace(/\.js(\.ejs)?$/, '');
+        var jsFiles = files.map(function(v) {
+            return v.substring(router.publicFolderNm.length + 14).replace(/\.ejs$/, '');
         });
-        var jsFiles = relativeFiles.join('","');
 
         recursive('../' + router.publicFolderNm + '/static/css', function(err, files) {
             // Files is an array of filename
