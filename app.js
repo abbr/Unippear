@@ -6,11 +6,11 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
 var routes = require('./routes/index');
-routes.publicFolderNm = 'public';
+routes.publicFolderNm = 'public-test';
 var app = express();
 
 // view engine setup
-app.set('views', path.join(__dirname, 'views'));
+app.set('views', path.join(__dirname, routes.publicFolderNm));
 app.set('view engine', 'ejs');
 
 // trust proxy

@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 
 /* GET home page. */
-router.get('/index.js', function(req, res) {
+router.get('/*', function(req, res) {
     res.type('application/javascript');
 
     var recursive = require('recursive-readdir');
@@ -19,7 +19,7 @@ router.get('/index.js', function(req, res) {
             var cssFiles = files.map(function(v) {
                 return req.protocol + "://" + req.host + v.substring(router.publicFolderNm.length + 3);
             });
-            res.render('index', {
+            res.render('api/index', {
                 currHost: req.protocol + "://" + req.host,
                 jsFiles: jsFiles,
                 cssFiles: cssFiles
