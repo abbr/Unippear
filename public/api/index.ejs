@@ -1,9 +1,10 @@
 var _SiteLayoutService;
 
 function siteLayoutService(opts) {
-  opts.headerHtmlFragment = '<%-currHost%>/header.html';
-  opts.footerHtmlFragment = '<%-currHost%>/footer.html';
-  _SiteLayoutService = opts;
+  _SiteLayoutService = opts || {};
+  _SiteLayoutService.headerFooterContainer = _SiteLayoutService.headerFooterContainer || 'body';
+  _SiteLayoutService.headerHtmlFragment = '<%-currHost%>/header.html';
+  _SiteLayoutService.footerHtmlFragment = '<%-currHost%>/footer.html';
 
   <% include jquery.js %>
     $.noConflict();
@@ -22,10 +23,10 @@ function siteLayoutService(opts) {
       }); %>
       // download header and footer after js are loaded
       $.get(opts.headerHtmlFragment, function(data) {
-        $("body").prepend(data);
+        $(_SiteLayoutService.headerFooterContainer).first().prepend(data);
       });
       $.get(opts.footerHtmlFragment, function(data) {
-        $("body").append(data);
+        $(_SiteLayoutService.headerFooterContainer).first().append(data);
       }); <% jsFiles.forEach(function(f) { %>
       }); <%
     }); %>
