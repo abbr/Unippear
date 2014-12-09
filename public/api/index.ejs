@@ -13,16 +13,21 @@ function siteLayoutService(opts) {
       $('head').append('<link rel="stylesheet" href="<%=f%>"/>'); <%
     }); %>
 
+    $.ajaxSetup({
+      cache: true
+    });
     // download js
     <% jsFiles.forEach(function(f) { %>
-      $('head').append('<script type="text/javascript" src="<%=currHost%>/js/<%=f%>"/>'); <%
+      $.getScript("<%=currHost%>/js/<%=f%>").done(function() { <%
+      }); %>
+      // download header and footer after js are loaded
+      $.get(opts.headerHtmlFragment, function(data) {
+        $("body").prepend(data);
+      });
+      $.get(opts.footerHtmlFragment, function(data) {
+        $("body").append(data);
+      }); <% jsFiles.forEach(function(f) { %>
+      }); <%
     }); %>
-
-    $.get(opts.headerHtmlFragment, function(data) {
-      $("body").prepend(data);
-    });
-    $.get(opts.footerHtmlFragment, function(data) {
-      $("body").append(data);
-    });
   });
 };
