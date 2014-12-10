@@ -27,14 +27,14 @@ var _SiteLayoutService;
             $jQ(_SiteLayoutService.headerFooterContainer).first().prepend(data);
           }
           catch (err) {}
-          $jQ(document).trigger('headerLoaded');
+          $(document).trigger('headerLoaded');
         });
         $jQ.get(opts.footerHtmlFragment, function(data) {
           try {
             $jQ(_SiteLayoutService.headerFooterContainer).first().append(data);
           }
           catch (err) {}
-          $jQ(document).trigger('footerLoaded');
+          $(document).trigger('footerLoaded');
         }); <% jsFiles.forEach(function(f) { %>
         }); <%
       }); %>

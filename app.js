@@ -25,7 +25,7 @@ app.use(bodyParser.urlencoded({
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, routes.publicFolderNm, 'static')));
 
-app.use('/index.js', routes);
+app.use('/', routes);
 
 app.use(function(req, res, next) {
     require('fs').exists(path.join(__dirname, routes.publicFolderNm, 'static', req.path + '.ejs'), function(exists) {
