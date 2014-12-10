@@ -5,6 +5,7 @@ var fs = require('fs');
 var path = require('path');
 var async = require('async');
 var ejs = require('ejs');
+var etag = require('etag');
 
 /* GET home page. */
 router.get('/index.js', function(req, res) {
@@ -32,25 +33,23 @@ router.get('/index.js', function(req, res) {
 router.get('/combined.js', function(req, res) {
     res.type('application/javascript');
     recursive(path.resolve('../' + router.publicFolderNm + '/static/js'), function(err, files) {
-        var lastModifiedStat;
-        async.map(files, fs.stat, function(err, stats) {
-            stats.forEach(function(stat) {
-                if (lastModifiedStat === undefined || lastModifiedStat.mtime.getTime() < stat.mtime.getTime()) {
-                    lastModifiedStat = stat;
+        async.map(files, fs.readFile, function(err, outputs) {
+            var cnt = '';
+            outputs.forEach(function(output, idx) {
+                if (path.extname(files[idx]) === '.ejs') {
+                    output = ejs.render(output.toString(), {
+                        "currHost": req.protocol + "://" + req.host
+                    });
                 }
+                cnt += output + '\n';
             });
-            async.map(files, fs.readFile, function(err, outputs) {
-                var cnt = '';
-                outputs.forEach(function(output, idx) {
-                    if (path.extname(files[idx]) === '.ejs') {
-                        output = ejs.render(output.toString(), {
-                            "currHost": req.protocol + "://" + req.host
-                        });
-                    }
-                    cnt += output + '\n';
-                });
+            res.setHeader('ETag', etag(cnt));
+            if (req.fresh) {
+                res.status(304).end();
+            }
+            else {
                 res.end(cnt);
-            });
+            }
         });
     });
 });
