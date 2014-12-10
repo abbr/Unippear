@@ -18,9 +18,7 @@ var _SiteLayoutService;
         cache: true
       });
       // download js
-      <% jsFiles.forEach(function(f) { %>
-        $jQ.getScript("<%=currHost%>/js/<%=f%>").done(function() { <%
-        }); %>
+      $jQ.getScript("<%=currHost%>/combined.js").done(function() {
         // download header and footer after js are loaded
         $jQ.get(opts.headerHtmlFragment, function(data) {
           try {
@@ -35,8 +33,7 @@ var _SiteLayoutService;
           }
           catch (err) {}
           $(document).trigger('footerLoaded');
-        }); <% jsFiles.forEach(function(f) { %>
-        }); <%
-      }); %>
+        });
+      });
     });
   };
