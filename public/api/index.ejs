@@ -1,34 +1,42 @@
 var _SiteLayoutService;
 
-function siteLayoutService(opts) {
-  _SiteLayoutService = opts || {};
-  _SiteLayoutService.headerFooterContainer = _SiteLayoutService.headerFooterContainer || 'body';
-  _SiteLayoutService.headerHtmlFragment = '<%-currHost%>/header.html';
-  _SiteLayoutService.footerHtmlFragment = '<%-currHost%>/footer.html';
+<% include jquery.js %>
 
-  <% include jquery.js %>
-    $.noConflict();
-  jQuery(document).ready(function($) {
-    // download css
-    <% cssFiles.forEach(function(f) { %>
-      $('head').append('<link rel="stylesheet" href="<%=f%>"/>'); <%
-    }); %>
+  function siteLayoutService(opts) {
+    _SiteLayoutService = opts || {};
+    _SiteLayoutService.headerFooterContainer = _SiteLayoutService.headerFooterContainer || 'body';
+    _SiteLayoutService.headerHtmlFragment = '<%-currHost%>/header.html';
+    _SiteLayoutService.footerHtmlFragment = '<%-currHost%>/footer.html';
 
-    $.ajaxSetup({
-      cache: true
-    });
-    // download js
-    <% jsFiles.forEach(function(f) { %>
-      $.getScript("<%=currHost%>/js/<%=f%>").done(function() { <%
+    $(function() {
+      // download css
+      <% cssFiles.forEach(function(f) { %>
+        $('head').append('<link rel="stylesheet" href="<%=f%>"/>'); <%
       }); %>
-      // download header and footer after js are loaded
-      $.get(opts.headerHtmlFragment, function(data) {
-        $(_SiteLayoutService.headerFooterContainer).first().prepend(data);
+
+      $.ajaxSetup({
+        cache: true
       });
-      $.get(opts.footerHtmlFragment, function(data) {
-        $(_SiteLayoutService.headerFooterContainer).first().append(data);
-      }); <% jsFiles.forEach(function(f) { %>
-      }); <%
-    }); %>
-  });
-};
+      // download js
+      <% jsFiles.forEach(function(f) { %>
+        $.getScript("<%=currHost%>/js/<%=f%>").done(function() { <%
+        }); %>
+        // download header and footer after js are loaded
+        $.get(opts.headerHtmlFragment, function(data) {
+          try {
+            $(_SiteLayoutService.headerFooterContainer).first().prepend(data);
+          }
+          catch (err) {}
+          $(document).trigger('headerLoaded');
+        });
+        $.get(opts.footerHtmlFragment, function(data) {
+          try {
+            $(_SiteLayoutService.headerFooterContainer).first().append(data);
+          }
+          catch (err) {}
+          $(document).trigger('footerLoaded');
+        }); <% jsFiles.forEach(function(f) { %>
+        }); <%
+      }); %>
+    });
+  };
