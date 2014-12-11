@@ -1,64 +1,73 @@
 var _SiteLayoutService;
 
-<% include jquery.js %>
 
-  function siteLayoutService(opts) {
-    _SiteLayoutService = opts || {};
-    _SiteLayoutService.headerFooterContainer = _SiteLayoutService.headerFooterContainer || 'body';
-    _SiteLayoutService.headerHtmlFragment = '<%-currHost%>/header.html';
-    _SiteLayoutService.footerHtmlFragment = '<%-currHost%>/footer.html';
+function siteLayoutService(opts) {
+  _SiteLayoutService = opts || {};
+  _SiteLayoutService.headerFooterContainer = _SiteLayoutService.headerFooterContainer || 'body';
+  _SiteLayoutService.headerHtmlFragment = '<%-currHost%>/header.html';
+  _SiteLayoutService.footerHtmlFragment = '<%-currHost%>/footer.html';
 
-    $(function($jQ) {
-      // download css
-      <% cssFiles.forEach(function(f) { %>
-        $jQ('head').append('<link rel="stylesheet" href="<%=f%>"/>'); <%
-      }); %>
+  <% include jquery.js %>
+    $jQ = $.noConflict(true);
+  $jQ(function() {
+    // download css
+    <% cssFiles.forEach(function(f) { %>
+      $jQ('head').append('<link rel="stylesheet" href="<%=f%>"/>'); <%
+    }); %>
 
-      $jQ.ajaxSetup({
-        cache: true
-      });
-      // download js
-      <%
-      if (locals.jsFiles) {
-        jsFiles.forEach(function(f) { %>
-          $jQ.getScript("<%=currHost%>/js/<%=f%>").done(function() { <%
-          }); %>
-          // download header and footer after js are loaded
-          $jQ.get(opts.headerHtmlFragment, function(data) {
-            try {
-              $jQ(_SiteLayoutService.headerFooterContainer).first().prepend(data);
-            }
-            catch (err) {}
-            $(document).trigger('headerLoaded');
-          });
-          $jQ.get(opts.footerHtmlFragment, function(data) {
-            try {
-              $jQ(_SiteLayoutService.headerFooterContainer).first().append(data);
-            }
-            catch (err) {}
-            $(document).trigger('footerLoaded');
-          }); <% jsFiles.forEach(function(f) { %>
-          }); <%
-        });
-      }
-      else { %>
-        $jQ.getScript("<%=currHost%>/combined.js").done(function() {
-          // download header and footer after js are loaded
-          $jQ.get(opts.headerHtmlFragment, function(data) {
-            try {
-              $jQ(_SiteLayoutService.headerFooterContainer).first().prepend(data);
-            }
-            catch (err) {}
-            $(document).trigger('headerLoaded');
-          });
-          $jQ.get(opts.footerHtmlFragment, function(data) {
-            try {
-              $jQ(_SiteLayoutService.headerFooterContainer).first().append(data);
-            }
-            catch (err) {}
-            $(document).trigger('footerLoaded');
-          });
-        }); <%
-      } %>
+    $jQ.ajaxSetup({
+      cache: true
     });
-  };
+    // download js
+    <%
+    if (locals.jsFiles) {
+      jsFiles.forEach(function(f) { %>
+        $jQ.getScript("<%=currHost%>/js/<%=f%>").done(function() { <%
+        }); %>
+        // download header and footer after js are loaded
+        $jQ.get(opts.headerHtmlFragment, function(data) {
+          try {
+            $jQ(_SiteLayoutService.headerFooterContainer).first().prepend(data);
+          }
+          catch (err) {}
+          try {
+            // don't used embedded $jQ, use the "default" one instead. Otherwise
+            // the handlers won't be called.
+            $(document).trigger('headerLoaded');
+          }
+          catch (err) {}
+        });
+        $jQ.get(opts.footerHtmlFragment, function(data) {
+          try {
+            $jQ(_SiteLayoutService.headerFooterContainer).first().append(data);
+          }
+          catch (err) {}
+          try {
+            $(document).trigger('footerLoaded');
+          }
+          catch (err) {}
+        }); <% jsFiles.forEach(function(f) { %>
+        }); <%
+      });
+    }
+    else { %>
+      $jQ.getScript("<%=currHost%>/combined.js").done(function() {
+        // download header and footer after js are loaded
+        $jQ.get(opts.headerHtmlFragment, function(data) {
+          try {
+            $jQ(_SiteLayoutService.headerFooterContainer).first().prepend(data);
+          }
+          catch (err) {}
+          $(document).trigger('headerLoaded');
+        });
+        $jQ.get(opts.footerHtmlFragment, function(data) {
+          try {
+            $jQ(_SiteLayoutService.headerFooterContainer).first().append(data);
+          }
+          catch (err) {}
+          $(document).trigger('footerLoaded');
+        });
+      }); <%
+    } %>
+  });
+};
