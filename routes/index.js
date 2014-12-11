@@ -34,10 +34,16 @@ router.get('/combined.js', function(req, res) {
     res.type('application/javascript');
     recursive(path.resolve('../' + router.publicFolderNm + '/static/js'), function(err, files) {
         async.map(files, fs.readFile, function(err, outputs) {
+            if(err) {
+                console.error(err);
+                res.status(500).end();
+                return;
+            }
             var cnt = '';
             outputs.forEach(function(output, idx) {
+                output = output.toString();
                 if (path.extname(files[idx]) === '.ejs') {
-                    output = ejs.render(output.toString(), {
+                    output = ejs.render(output, {
                         "currHost": req.protocol + "://" + req.host
                     });
                 }
