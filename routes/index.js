@@ -10,21 +10,25 @@ var etag = require('etag');
 /* GET home page. */
 router.get('/index.js', function(req, res) {
     res.type('application/javascript');
-    recursive('../' + router.publicFolderNm + '/static/js', function(err, files) {
-        // Files is an array of filename
-        var jsFiles = files.map(function(v) {
-            return v.substring(router.publicFolderNm.length + 14).replace(/\.ejs$/, '');
+    recursive('../' + router.publicFolderNm + '/static/css', function(err, files) {
+        var cssFiles = files.map(function(v) {
+            return req.protocol + "://" + req.host + v.substring(router.publicFolderNm.length + 10).replace(/\.ejs$/, '');
         });
-
-        recursive('../' + router.publicFolderNm + '/static/css', function(err, files) {
-            // Files is an array of filename
-            var cssFiles = files.map(function(v) {
-                return req.protocol + "://" + req.host + v.substring(router.publicFolderNm.length + 10).replace(/\.ejs$/, '');
+        if (router.combineJs) {
+            res.render('api/index', {
+                "currHost": req.protocol + "://" + req.host,
+                "cssFiles": cssFiles
+            });
+            return;
+        }
+        recursive('../' + router.publicFolderNm + '/static/js', function(err, files) {
+            var jsFiles = files.map(function(v) {
+                return v.substring(router.publicFolderNm.length + 14).replace(/\.ejs$/, '');
             });
             res.render('api/index', {
-                currHost: req.protocol + "://" + req.host,
-                jsFiles: jsFiles,
-                cssFiles: cssFiles
+                "currHost": req.protocol + "://" + req.host,
+                "jsFiles": jsFiles,
+                "cssFiles": cssFiles
             });
         });
     });
@@ -34,7 +38,7 @@ router.get('/combined.js', function(req, res) {
     res.type('application/javascript');
     recursive(path.resolve('../' + router.publicFolderNm + '/static/js'), function(err, files) {
         async.map(files, fs.readFile, function(err, outputs) {
-            if(err) {
+            if (err) {
                 console.error(err);
                 res.status(500).end();
                 return;

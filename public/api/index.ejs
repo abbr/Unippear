@@ -18,22 +18,47 @@ var _SiteLayoutService;
         cache: true
       });
       // download js
-      $jQ.getScript("<%=currHost%>/combined.js").done(function() {
-        // download header and footer after js are loaded
-        $jQ.get(opts.headerHtmlFragment, function(data) {
-          try {
-            $jQ(_SiteLayoutService.headerFooterContainer).first().prepend(data);
-          }
-          catch (err) {}
-          $(document).trigger('headerLoaded');
+      <%
+      if (locals.jsFiles) {
+        jsFiles.forEach(function(f) { %>
+          $jQ.getScript("<%=currHost%>/js/<%=f%>").done(function() { <%
+          }); %>
+          // download header and footer after js are loaded
+          $jQ.get(opts.headerHtmlFragment, function(data) {
+            try {
+              $jQ(_SiteLayoutService.headerFooterContainer).first().prepend(data);
+            }
+            catch (err) {}
+            $(document).trigger('headerLoaded');
+          });
+          $jQ.get(opts.footerHtmlFragment, function(data) {
+            try {
+              $jQ(_SiteLayoutService.headerFooterContainer).first().append(data);
+            }
+            catch (err) {}
+            $(document).trigger('footerLoaded');
+          }); <% jsFiles.forEach(function(f) { %>
+          }); <%
         });
-        $jQ.get(opts.footerHtmlFragment, function(data) {
-          try {
-            $jQ(_SiteLayoutService.headerFooterContainer).first().append(data);
-          }
-          catch (err) {}
-          $(document).trigger('footerLoaded');
-        });
-      });
+      }
+      else { %>
+        $jQ.getScript("<%=currHost%>/combined.js").done(function() {
+          // download header and footer after js are loaded
+          $jQ.get(opts.headerHtmlFragment, function(data) {
+            try {
+              $jQ(_SiteLayoutService.headerFooterContainer).first().prepend(data);
+            }
+            catch (err) {}
+            $(document).trigger('headerLoaded');
+          });
+          $jQ.get(opts.footerHtmlFragment, function(data) {
+            try {
+              $jQ(_SiteLayoutService.headerFooterContainer).first().append(data);
+            }
+            catch (err) {}
+            $(document).trigger('footerLoaded');
+          });
+        }); <%
+      } %>
     });
   };

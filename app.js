@@ -7,6 +7,7 @@ var bodyParser = require('body-parser');
 
 var routes = require('./routes/index');
 routes.publicFolderNm = 'public-test';
+routes.combineJs = true;
 var app = express();
 
 // view engine setup
