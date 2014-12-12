@@ -22,10 +22,8 @@ Large organizations often owns many web sites, such as vanity sites, subsidiary 
 |    +-- www                              <--- app startup script
 |-- public                                <--- ExpressJS view container
 |    |-- api                              <--- non-payload container
-|    |    |-- ...                         
 |    |    |-- index.ejs                   <--- bootstrap javascript
 |    |    |-- jquery.ejs                  <--- jquery to be imbeded into index.ejs
-|    |    |-- ...
 |    |-- static                           <--- payload container
 |    |    |-- css                         <--- css folder
 |    |    |-- img                         <--- img folder
