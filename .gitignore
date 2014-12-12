@@ -1,5 +1,5 @@
 node_modules/
-public/components
+public/static/components
 .sass-cache
 .c9
 public-test/
