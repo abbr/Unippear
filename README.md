@@ -4,9 +4,9 @@ SiteLayoutService
 Enforce consistent look-and-feel to multiple enterprise websites through centralized layout manager service.
 
 ## Motivation
-Large organizations often owns many web sites, such as vanity sites, subsidiary sites etc, in addition to home portal. Maintaining a consistent look-and-feel for branding purpose is desirable, sometimes even mandatory. In early days when most websites were built with static HTML files, consistency is achieved through distributing a set of template files to member sites. Nowadays most sites are built on a server-side scripting platform employing some sort of template engines. For this template sharing solution to work, adapting the template to a specific engine is unavoidable. However, this conversion effort not only takes time, but also prone to breaking the consistency. Moreover, coordinating template upgrade could also be a challenge.
+Large organizations often own many web sites, such as vanity sites, subsidiary sites etc, in addition to home portal. Maintaining a consistent look-and-feel for branding purpose is often desirable, sometimes even mandatory. In early days when most websites were built with static HTML files, consistency is achieved through distributing a set of template files to member sites. Nowadays a lot of sites are built on a server-side scripting platform employing some sort of template engines. For this template sharing solution to work, adapting the template to a specific engine is unavoidable. However, this conversion effort not only takes time, but also prone to breaking the consistency. Besides, coordinating template upgrade could also be a challenge.
 
-*SiteLayoutService* addresses these problems through a service oriented architecture (SOA) that takes advantage of Web 2.0 AJAX technology. The layout templates are managed in a centralized API service. A member site applies the layout by adding a few lines of Javascript code to invoke the service. This centralized service approach helps enforcing core look-and-feel, yet still gives the site builder some degree of freedom to customize presentation through optional configurations.
+*SiteLayoutService* addresses these problems through a service oriented architecture (SOA) that takes advantage of Web 2.0 AJAX technology. The layout templates are managed in a centralized API service web app. A member site applies the layout by adding a few lines of Javascript code to invoke the service. This centralized service approach helps enforcing core look-and-feel, yet still gives the site builder some degree of freedom to customize presentation through optional configurations.
 
 ## Features
 * Enforcing consistent header and footer across multiple websites.
@@ -16,12 +16,12 @@ Large organizations often owns many web sites, such as vanity sites, subsidiary 
 * Security: Only pre-registered client sites can use the service. 
 
 ## Description
-*SiteLayoutService* mainly consists of following folders and files:
+*SiteLayoutService* runs on [Express](http://expressjs.com). The core component is a loader that controls what get injected asynchronously to the document and the order of loading.  *SiteLayoutService* mainly consists of following folders and files:
 ```
 /                                         <--- app root
 |-- bin                                   
 |    +-- www                              <--- app startup script
-|-- public                                <--- ExpressJS view folder
+|-- public                                <--- Express view folder
 |    |-- api                              <--- non-payload folder
 |    |    |-- index.ejs                   <--- loader
 |    |    |-- jquery.ejs                  <--- jquery to be imbeded into index.ejs used by loader only
@@ -32,8 +32,8 @@ Large organizations often owns many web sites, such as vanity sites, subsidiary 
 |    |    |-- footer.html                 <--- footer HTML fragment
 |    |    |-- header.html                 <--- header HTML fragment
 |-- routes                                
-|    +-- index.js                         <--- ExpressJS routers
-|-- app.js                                <--- ExpressJS app config
+|    +-- index.js                         <--- Express routers
+|-- app.js                                <--- Express app config
 |-- package.json                          <--- Node package descriptor
 
 ```
