@@ -16,6 +16,7 @@ Large organizations often owns many web sites, such as vanity sites, subsidiary 
 * Security: Only pre-registered client sites can use the service. 
 
 ## Description
+*SiteLayoutService* mainly consists of following folders and files:
 ```
 /                                         <--- app root
 |-- bin                                   
