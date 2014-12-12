@@ -22,8 +22,8 @@ Large organizations often owns many web sites, such as vanity sites, subsidiary 
 |    +-- www                              <--- app startup script
 |-- public                                <--- ExpressJS view folder
 |    |-- api                              <--- non-payload folder
-|    |    |-- index.ejs                   <--- bootstrap javascript
-|    |    |-- jquery.ejs                  <--- jquery to be imbeded into index.ejs
+|    |    |-- index.ejs                   <--- loader
+|    |    |-- jquery.ejs                  <--- jquery to be imbeded into index.ejs used by loader only
 |    |-- static                           <--- payload folder
 |    |    |-- css                         <--- css folder
 |    |    |-- img                         <--- img folder
@@ -38,7 +38,7 @@ Large organizations often owns many web sites, such as vanity sites, subsidiary 
 ```
 ## Implementation Guidelines
 It is assumed that the layout to be implemented as a service will be imported from an existing website since nearly all organizations already have a web presence. In simplest case the import task involves no more than copy & paste files and HTML code fragments. Complexity arises when client-side Javascript needs to be executed to render header and footer. Following guidelines are drawn from converting an a real production web site:
-* HTML fragments and assets loaded by AJAX follow a different processing order. Events that works before may not get triggered at desired time. For example, jQuery `$(function(){})` block is executed when DOM is ready. But if header and footer are injected to the DOM by AJAX, then DOM *ready* event will be triggered prior to header and footer are available. To get desired behavior, *SiteLayoutService* triggers a document-level custom event *headerLoaded* and *footerLoaded* when headers and footers are loaded, respectively. Javascript that depends on the available of header, for example, should be enclosed in `$(document).on('headerLoaded')` instead.
+* HTML fragments and assets loaded by AJAX follow a different processing order. Events that works before may not get triggered at desired time. For example, jQuery `$(function(){})` block is executed when DOM is ready. But if header and footer are injected to the DOM by AJAX, then DOM *ready* event will be triggered prior to header and footer are available. To get desired behavior, if jQuery is added to payload or if directly referenced by the document, *SiteLayoutService* will trigger a document-level custom event *headerLoaded* and *footerLoaded* when headers and footers are loaded, respectively. Javascript that depends on the available of header, for example, should then be enclosed in `$(document).on('headerLoaded')` instead.
 * When a HTML fragment is injected into DOM by AJAX, some browsers prevent inline Javascript in the fragment to be executed. Therefore header and footer HTML fragment should be free of inline Javascript.
 
 ## Planned Enhancements
