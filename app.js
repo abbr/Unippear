@@ -6,7 +6,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
 var routes = require('./routes/index');
-routes.publicFolderNm = 'public-test';
+routes.publicFolderNm = 'public';
 routes.combineJs = true;
 var app = express();
 

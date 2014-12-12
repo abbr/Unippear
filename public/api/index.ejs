@@ -58,14 +58,20 @@ function siteLayoutService(opts) {
             $jQ(_SiteLayoutService.headerFooterContainer).first().prepend(data);
           }
           catch (err) {}
-          $(document).trigger('headerLoaded');
+          try {
+            $(document).trigger('headerLoaded');
+          }
+          catch (err) {}
         });
         $jQ.get(opts.footerHtmlFragment, function(data) {
           try {
             $jQ(_SiteLayoutService.headerFooterContainer).first().append(data);
           }
           catch (err) {}
-          $(document).trigger('footerLoaded');
+          try {
+            $(document).trigger('footerLoaded');
+          }
+          catch (err) {}
         });
       }); <%
     } %>
