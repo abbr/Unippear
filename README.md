@@ -20,11 +20,11 @@ Large organizations often owns many web sites, such as vanity sites, subsidiary 
 /                                         <--- app root
 |-- bin                                   
 |    +-- www                              <--- app startup script
-|-- public                                <--- ExpressJS view container
-|    |-- api                              <--- non-payload container
+|-- public                                <--- ExpressJS view folder
+|    |-- api                              <--- non-payload folder
 |    |    |-- index.ejs                   <--- bootstrap javascript
 |    |    |-- jquery.ejs                  <--- jquery to be imbeded into index.ejs
-|    |-- static                           <--- payload container
+|    |-- static                           <--- payload folder
 |    |    |-- css                         <--- css folder
 |    |    |-- img                         <--- img folder
 |    |    |-- js                          <--- js folder
@@ -33,7 +33,7 @@ Large organizations often owns many web sites, such as vanity sites, subsidiary 
 |-- routes                                
 |    +-- index.js                         <--- ExpressJS routers
 |-- app.js                                <--- ExpressJS app config
-|-- package.json                          <--- Node package
+|-- package.json                          <--- Node package descriptor
 
 ```
 ## Implementation Guidelines
