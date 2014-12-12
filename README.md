@@ -17,7 +17,7 @@ Large organizations often owns many web sites, such as vanity sites, subsidiary 
 
 ## Description
 ```
-<app_root>
+/                                         <--- app root
 |-- bin                                   
 |    +-- www                              <--- app startup script
 |-- public                                <--- ExpressJS view container
