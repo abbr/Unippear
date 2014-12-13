@@ -63,7 +63,7 @@ After you have checked out live demo, familiar with directory structure, underst
 ### Serving
 *Unippear* layout is served by adding following Javascript to a member website page:
 ```
-<script type="text/javascript" src="<your_unippearHost>/index.js"></script>
+<script type="text/javascript" src="<your-unippearHost>/index.js"></script>
 <script type="text/javascript">
     Unippear();
 </script>
@@ -80,12 +80,12 @@ Unippear({
 To implement *showSearchBox*, you can add following code to one of your JS assets if you use jQuery:
 ```
 $(document).on('headerLoaded', function() {
-    if(_Unippear.showSearchBox === false){
+    if(Unippear.showSearchBox === false){
         $('#searchBox').hide();
     }
 });
 ```
-Note that options set by client is accessible from global variable *_Unippear*. Also note the code is defined in the handler of custom event *headerLoaded* rather than *ready* of document. See [Implementation Guidelines](#implementation-guidelines) below for details.
+Note that options set by client is accessible from global variable *Unippear*. Also note the code is defined in the handler of custom event *headerLoaded* rather than *ready* of document. See [Implementation Guidelines](#implementation-guidelines) below for details.
 
 ## Implementation Guidelines
 It is assumed that the layout to be implemented as a service will be imported from an existing website since nearly all organizations already have a web presence. In simplest case the import task involves no more than copy & paste files and HTML code fragments. Complexity arises when client-side Javascript needs to be executed to render header and footer. Following guidelines are drawn from converting an a real production web site:
