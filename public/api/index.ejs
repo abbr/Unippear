@@ -1,8 +1,8 @@
-function Unippear(opts) {
-  Unippear = opts || {};
-  Unippear.headerFooterContainer = Unippear.headerFooterContainer || 'body';
-  Unippear.headerHtmlFragment = '<%-unippearHost%>/header.html';
-  Unippear.footerHtmlFragment = '<%-unippearHost%>/footer.html';
+function unippear(opts) {
+  unippear = opts || {};
+  unippear.headerFooterContainer = unippear.headerFooterContainer || 'body';
+  unippear.headerHtmlFragment = '<%-unippearHost%>/header.html';
+  unippear.footerHtmlFragment = '<%-unippearHost%>/footer.html';
 
   <% include jquery.js %>
     $jQ = $.noConflict(true);
@@ -24,7 +24,7 @@ function Unippear(opts) {
         // download header and footer after js are loaded
         $jQ.get(opts.headerHtmlFragment, function(data) {
           try {
-            $jQ(Unippear.headerFooterContainer).first().prepend(data);
+            $jQ(unippear.headerFooterContainer).first().prepend(data);
           }
           catch (err) {}
           try {
@@ -36,7 +36,7 @@ function Unippear(opts) {
         });
         $jQ.get(opts.footerHtmlFragment, function(data) {
           try {
-            $jQ(Unippear.headerFooterContainer).first().append(data);
+            $jQ(unippear.headerFooterContainer).first().append(data);
           }
           catch (err) {}
           try {
@@ -52,7 +52,7 @@ function Unippear(opts) {
         // download header and footer after js are loaded
         $jQ.get(opts.headerHtmlFragment, function(data) {
           try {
-            $jQ(Unippear.headerFooterContainer).first().prepend(data);
+            $jQ(unippear.headerFooterContainer).first().prepend(data);
           }
           catch (err) {}
           try {
@@ -62,7 +62,7 @@ function Unippear(opts) {
         });
         $jQ.get(opts.footerHtmlFragment, function(data) {
           try {
-            $jQ(Unippear.headerFooterContainer).first().append(data);
+            $jQ(unippear.headerFooterContainer).first().append(data);
           }
           catch (err) {}
           try {
