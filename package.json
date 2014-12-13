@@ -1,5 +1,5 @@
 {
-  "name": "site-layout-service",
+  "name": "unippear",
   "version": "0.0.0",
   "license": "MIT",
   "author": {
@@ -7,9 +7,9 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/abbr/SiteLayoutService.git"
+    "url": "https://github.com/abbr/Unippear.git"
   },
-  "homepage": "https://github.com/abbr/SiteLayoutService",
+  "homepage": "https://github.com/abbr/Unippear",
   "keywords": ["website layout service", "soa"],
   "private": true,
   "scripts": {

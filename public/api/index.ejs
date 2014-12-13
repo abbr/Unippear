@@ -1,11 +1,11 @@
-var _SiteLayoutService;
+var _Unippear;
 
 
-function siteLayoutService(opts) {
-  _SiteLayoutService = opts || {};
-  _SiteLayoutService.headerFooterContainer = _SiteLayoutService.headerFooterContainer || 'body';
-  _SiteLayoutService.headerHtmlFragment = '<%-currHost%>/header.html';
-  _SiteLayoutService.footerHtmlFragment = '<%-currHost%>/footer.html';
+function Unippear(opts) {
+  _Unippear = opts || {};
+  _Unippear.headerFooterContainer = _Unippear.headerFooterContainer || 'body';
+  _Unippear.headerHtmlFragment = '<%-currHost%>/header.html';
+  _Unippear.footerHtmlFragment = '<%-currHost%>/footer.html';
 
   <% include jquery.js %>
     $jQ = $.noConflict(true);
@@ -27,7 +27,7 @@ function siteLayoutService(opts) {
         // download header and footer after js are loaded
         $jQ.get(opts.headerHtmlFragment, function(data) {
           try {
-            $jQ(_SiteLayoutService.headerFooterContainer).first().prepend(data);
+            $jQ(_Unippear.headerFooterContainer).first().prepend(data);
           }
           catch (err) {}
           try {
@@ -39,7 +39,7 @@ function siteLayoutService(opts) {
         });
         $jQ.get(opts.footerHtmlFragment, function(data) {
           try {
-            $jQ(_SiteLayoutService.headerFooterContainer).first().append(data);
+            $jQ(_Unippear.headerFooterContainer).first().append(data);
           }
           catch (err) {}
           try {
@@ -55,7 +55,7 @@ function siteLayoutService(opts) {
         // download header and footer after js are loaded
         $jQ.get(opts.headerHtmlFragment, function(data) {
           try {
-            $jQ(_SiteLayoutService.headerFooterContainer).first().prepend(data);
+            $jQ(_Unippear.headerFooterContainer).first().prepend(data);
           }
           catch (err) {}
           try {
@@ -65,7 +65,7 @@ function siteLayoutService(opts) {
         });
         $jQ.get(opts.footerHtmlFragment, function(data) {
           try {
-            $jQ(_SiteLayoutService.headerFooterContainer).first().append(data);
+            $jQ(_Unippear.headerFooterContainer).first().append(data);
           }
           catch (err) {}
           try {
