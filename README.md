@@ -18,7 +18,7 @@ Large organizations often own many web sites, such as vanity sites, subsidiary s
 ## Description
 *Unippear* runs on [Express](http://expressjs.com). The most important folders and files that *Unippear* consists of are:
 ```
-/                                         <--- app root
+/                           <--- app root
 |-- bin                                   
 |    +-- www                <--- app startup script
 |-- public                  <--- Express view folder
