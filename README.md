@@ -15,6 +15,8 @@ Large organizations often own many web sites, such as vanity sites, subsidiary s
 * Layout versioning: A website can choose either ties to a specific layout version or always uses the latest version.
 * Security: Only pre-registered client sites can use the service. 
 
+## Live Demo
+
 ## Description
 *Unippear* runs on [Express](http://expressjs.com). Important folders and files  *Unippear* consists of are:
 ```
@@ -34,21 +36,21 @@ Large organizations often own many web sites, such as vanity sites, subsidiary s
 |    +-- index.js           <--- Express routers
 |-- app.js                  <--- Express app config
 |-- package.json            <--- Node package descriptor
-
 ```
-The core component is a loader that controls what assets (HTML, CSS, JS, IMG etc) get injected asynchronously to the client document and the order of loading. All assets should be stored in */public/assets*. The loader loads following assets:
+The core component is a loader that controls what assets (HTML, CSS, JS, IMG etc) get injected asynchronously to the client document and the order of loading. All assets should be stored in */public/assets*. The loader loads following assets automatically:
 
-1. All *assets/css* files in alphabetic sequence, nested folders are allowed
-2. All *assets/js* files in alphabetic sequence, nested folders are allowed
+1. All *assets/css* files sorted alphabetically, nested folders are allowed and sorted after file peers
+2. All *assets/js* files  sorted alphabetically, nested folders are allowed and sorted after file peers
 3. *assets/header.html*
 4. *assets/footer.html*
 
-To improve performance, all JS files are combined into one download by default. If individual download is desirable, say for debugging purpose, it can be enabled by setting `routes.combineJs = false;` in */app.js*.
+To improve performance, all JS files are combined into one download by default. If individual download is desirable, say for debugging purpose, it can be enabled by toggling `routes.combineJs` to `false` in */app.js*.
 
-The order of loading the assets is important. A good strategy needs to take into account performance and Javascript event processing model. CSS files are loaded in parallel. To ensure event handler is defined before event is triggered, the loader postpones loading header and footer only after all JS files have been loaded and evaluated. If JS files are not combined, then each JS file is loaded and evaluated sequentially. Either combined JS or the first individual JS file is loaded in parallel with CSS files. Header and footer are also loaded in parallel.
+The order of loading the assets is important. A good strategy needs to take performance and Javascript event processing model into account. CSS files are loaded in parallel. To ensure event handler is defined before event is triggered, the loader postpones loading header and footer only after all JS files have been loaded and evaluated. If JS files are not combined, then each JS file is loaded and evaluated in serial. Either combined JS or the first individual JS file is loaded in parallel with CSS files. Header and footer are also loaded in parallel.
 
 ## Usage
 
+*Unippear* layout is served by adding following Javascript to the member website page:
 ```
 <script type="text/javascript" src="<unippearHost>/index.js"></script>
 <script type="text/javascript">
@@ -59,6 +61,7 @@ The order of loading the assets is important. A good strategy needs to take into
 It is assumed that the layout to be implemented as a service will be imported from an existing website since nearly all organizations already have a web presence. In simplest case the import task involves no more than copy & paste files and HTML code fragments. Complexity arises when client-side Javascript needs to be executed to render header and footer. Following guidelines are drawn from converting an a real production web site:
 * HTML fragments and assets loaded by AJAX follow a different DOM parsing order. Events that works before may not get triggered at desired time. For example, jQuery `$(function(){})` block is executed when DOM is ready. But if header and footer are injected to the DOM by AJAX, then DOM *ready* event will be triggered prior to header and footer are available. To get the desired behavior, if jQuery is added to payload or if directly referenced by the document, *Unippear* will trigger a document-level custom event *headerLoaded* and *footerLoaded* when headers and footers are loaded, respectively. Javascript that depends on the readiness of header, for example, should then be enclosed in `$(document).on('headerLoaded')` instead.
 * When a HTML fragment is injected into DOM by AJAX, some browsers prevent inline Javascript in the fragment to be executed. Therefore header and footer HTML fragment should be free of inline Javascript.
+* If total size of JS files are large, consider using [AMD](http://en.wikipedia.org/wiki/Asynchronous_module_definition). 
 
 ## Planned Enhancements
 * Allow multiple themes
