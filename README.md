@@ -48,20 +48,38 @@ Large organizations often own many web sites, such as vanity sites, subsidiary s
 
 To improve performance, all JS files are combined into one download by default. If individual download is desirable, say for debugging purpose, it can be enabled by toggling `routes.combineJs` to `false` in */app.js*.
 
-The order of loading the assets is important. A good strategy needs to take performance and Javascript event processing model into account. CSS files are loaded in parallel. To ensure event handler is defined before event is triggered, the loader postpones loading header and footer only after all JS files have been loaded and evaluated. If JS files are not combined, then each JS file is loaded and evaluated in serial. Either combined JS or the first individual JS file is loaded in parallel with CSS files. Header and footer are also loaded in parallel.
+The order of loading and parsing the assets is important. A good strategy needs to take performance and Javascript event processing model into account. CSS and JS files should be named in their desired parsing order. For example, prefix file names with 0-left-padded digits, such as 01_file1.js, 02_file2.js etc. CSS files are loaded in parallel. To ensure event handler is defined before event is triggered, the loader postpones loading header and footer only after all JS files have been loaded and evaluated. If JS files are not combined, then each JS file is loaded and evaluated in serial. Either combined JS or the first individual JS file is loaded in parallel with CSS files. Header and footer are also loaded in parallel.
 
 ### Templating
-*Unippear* uses [EJS](https://github.com/tj/ejs) template engine. EJS view folder is set to */public*. Any file in */public* can be converted to EJS template by appending file extension *.ejs* to the file name. A EJS template performs context substitution. In particular, *Unippear* sets context variable `unippearHost` to  *&lt;protocol&gt;:// &lt;host_name&gt;:&lt;port&gt;* of *Unippear* service web app to allow fully qualified URL.
+*Unippear* uses [EJS](https://github.com/tj/ejs) template engine. EJS view folder is set to */public*. Any file in */public* can be converted to EJS template by appending file extension *.ejs* to the file name. A EJS template performs context substitution. In particular, *Unippear* sets context variable `unippearHost` to  *&lt;protocol&gt;:// &lt;host_name&gt;:&lt;port&gt;* of *Unippear* service web app to allow emitting fully qualified URL.
 
-### Usage
-
+### Serving
 *Unippear* layout is served by adding following Javascript to the member website page:
 ```
 <script type="text/javascript" src="<unippearHost>/index.js"></script>
 <script type="text/javascript">
-    Unippear({});
+    Unippear();
 </script>
 ```
+
+### Customization
+The call to `Unippear()` can take an option parameter. What options are allowed is implementation specific. For example, if in your implementation, it is determined that the search box in the header is optional and it's up to each member site to decide whether or not to show the searchBox, then you can support an option called *showSearchBox*. A member site that wants to hide search box can call *Unippear* this way:
+```
+Unippear({
+   "showSearchBox": false
+});
+```
+
+To implement *showSearchBox*, you can add following code to one of your JS assets if you use jQuery:
+```
+$(document).on('headerLoaded', function() {
+    if(_Unippear.showSearchBox === false){
+        $('#searchBox').hide();
+    }
+});
+```
+Note that options set by client is accessible from global variable *_Unippear*. Also note the code is defined in the handler of custom event *headerLoaded* rather than *ready* of document. See [Implementation Guidelines](#implementation-guidelines) below for details.
+
 ## Implementation Guidelines
 It is assumed that the layout to be implemented as a service will be imported from an existing website since nearly all organizations already have a web presence. In simplest case the import task involves no more than copy & paste files and HTML code fragments. Complexity arises when client-side Javascript needs to be executed to render header and footer. Following guidelines are drawn from converting an a real production web site:
 * HTML fragments and assets loaded by AJAX follow a different DOM parsing order. Events that works before may not get triggered at desired time. For example, jQuery `$(function(){})` block is executed when DOM is ready. But if header and footer are injected to the DOM by AJAX, then DOM *ready* event will be triggered prior to header and footer are available. To get the desired behavior, if jQuery is added to payload or if directly referenced by the document, *Unippear* will trigger a document-level custom event *headerLoaded* and *footerLoaded* when headers and footers are loaded, respectively. Javascript that depends on the readiness of header, for example, should then be enclosed in `$(document).on('headerLoaded')` instead.
