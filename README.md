@@ -53,10 +53,13 @@ The order of loading and parsing the assets is important. A good strategy needs 
 ### Templating
 *Unippear* uses [EJS](https://github.com/tj/ejs) template engine. EJS view folder is set to */public*. Any file in */public* can be converted to EJS template by appending file extension *.ejs* to the file name. A EJS template performs context substitution. In particular, *Unippear* sets context variable `unippearHost` to  *&lt;protocol&gt;:// &lt;host_name&gt;:&lt;port&gt;* of *Unippear* service web app to allow emitting fully qualified URL.
 
+### Implementation
+After you have checked out live demo, familiar with directory structure, understood the function of loader and EJS template engine, you can build your site layout service by replacing files in */public/assets* with your own assets.
+
 ### Serving
 *Unippear* layout is served by adding following Javascript to the member website page:
 ```
-<script type="text/javascript" src="<unippearHost>/index.js"></script>
+<script type="text/javascript" src="<your_unippearHost>/index.js"></script>
 <script type="text/javascript">
     Unippear();
 </script>
