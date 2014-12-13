@@ -33,7 +33,7 @@ app.use(function(req, res, next) {
         if (exists) {
             res.type(path.extname(req.path));
             res.render(path.join('assets', req.path + '.ejs'), {
-                currHost: req.protocol + "://" + req.host
+                unippearHost: req.protocol + "://" + req.host
             });
 
         }

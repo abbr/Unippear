@@ -16,7 +16,7 @@ router.get('/index.js', function(req, res) {
         });
         if (router.combineJs) {
             res.render('api/index', {
-                "currHost": req.protocol + "://" + req.host,
+                "unippearHost": req.protocol + "://" + req.host,
                 "cssFiles": cssFiles
             });
             return;
@@ -26,7 +26,7 @@ router.get('/index.js', function(req, res) {
                 return v.substring(router.publicFolderNm.length + 14).replace(/\.ejs$/, '');
             });
             res.render('api/index', {
-                "currHost": req.protocol + "://" + req.host,
+                "unippearHost": req.protocol + "://" + req.host,
                 "jsFiles": jsFiles,
                 "cssFiles": cssFiles
             });
@@ -48,7 +48,7 @@ router.get('/combined.js', function(req, res) {
                 output = output.toString();
                 if (path.extname(files[idx]) === '.ejs') {
                     output = ejs.render(output, {
-                        "currHost": req.protocol + "://" + req.host
+                        "unippearHost": req.protocol + "://" + req.host
                     });
                 }
                 cnt += output + '\n';
