@@ -36,13 +36,25 @@ Large organizations often own many web sites, such as vanity sites, subsidiary s
 |-- package.json            <--- Node package descriptor
 
 ```
-The core component is a loader that controls what assets (HTML, CSS, JS, IMG etc) get injected asynchronously to the client document and the order of loading. All assets should be stored in */public/assets*. By default the loader loads following assets in sequence:
+The core component is a loader that controls what assets (HTML, CSS, JS, IMG etc) get injected asynchronously to the client document and the order of loading. All assets should be stored in */public/assets*. The loader loads following assets:
 
 1. All *assets/css* files in alphabetic sequence, nested folders are allowed
-2. All combined *assets/js* files in alphabetic sequence
+2. All *assets/js* files in alphabetic sequence, nested folders are allowed
 3. *assets/header.html*
 4. *assets/footer.html*
 
+To improve performance, all JS files are combined into one download by default. If individual download is desirable, say for debugging purpose, it can be enabled by setting `routes.combineJs = false;` in */app.js*.
+
+The order of loading the assets is important. A good strategy needs to take into account performance and Javascript event processing model. CSS files are loaded in parallel. To ensure event handler is defined before event is triggered, the loader postpones loading header and footer only after all JS files have been loaded and evaluated. If JS files are not combined, then each JS file is loaded and evaluated sequentially. Either combined JS or the first individual JS file is loaded in parallel with CSS files. Header and footer are also loaded in parallel.
+
+## Usage
+
+```
+<script type="text/javascript" src="<unippearHost>/index.js"></script>
+<script type="text/javascript">
+    Unippear({});
+</script>
+```
 ## Implementation Guidelines
 It is assumed that the layout to be implemented as a service will be imported from an existing website since nearly all organizations already have a web presence. In simplest case the import task involves no more than copy & paste files and HTML code fragments. Complexity arises when client-side Javascript needs to be executed to render header and footer. Following guidelines are drawn from converting an a real production web site:
 * HTML fragments and assets loaded by AJAX follow a different DOM parsing order. Events that works before may not get triggered at desired time. For example, jQuery `$(function(){})` block is executed when DOM is ready. But if header and footer are injected to the DOM by AJAX, then DOM *ready* event will be triggered prior to header and footer are available. To get the desired behavior, if jQuery is added to payload or if directly referenced by the document, *Unippear* will trigger a document-level custom event *headerLoaded* and *footerLoaded* when headers and footers are loaded, respectively. Javascript that depends on the readiness of header, for example, should then be enclosed in `$(document).on('headerLoaded')` instead.
