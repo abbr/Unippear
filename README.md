@@ -16,27 +16,28 @@ Large organizations often own many web sites, such as vanity sites, subsidiary s
 * Security: Only pre-registered client sites can use the service. 
 
 ## Description
-*Unippear* runs on [Express](http://expressjs.com). The core component is a loader that controls what get injected asynchronously to the document and the order of loading.  *Unippear* mainly consists of following folders and files:
+*Unippear* runs on [Express](http://expressjs.com). The most important folders and files that *Unippear* consists of are:
 ```
 /                                         <--- app root
 |-- bin                                   
-|    +-- www                              <--- app startup script
-|-- public                                <--- Express view folder
-|    |-- api                              <--- non-payload folder
-|    |    |-- index.ejs                   <--- loader
-|    |    |-- jquery.ejs                  <--- jquery to be imbeded into index.ejs used by loader only
-|    |-- static                           <--- payload folder
-|    |    |-- css                         <--- css folder
-|    |    |-- img                         <--- img folder
-|    |    |-- js                          <--- js folder
-|    |    |-- footer.html                 <--- footer HTML fragment
-|    |    |-- header.html                 <--- header HTML fragment
+|    +-- www                <--- app startup script
+|-- public                  <--- Express view folder
+|    |-- api                <--- non-payload folder
+|    |    |-- index.ejs     <--- loader
+|    |    |-- jquery.ejs    <--- jquery to be imbeded into index.ejs used by loader only
+|    |-- static             <--- payload folder
+|    |    |-- css           <--- css folder
+|    |    |-- js            <--- js folder
+|    |    |-- footer.html   <--- footer HTML fragment
+|    |    |-- header.html   <--- header HTML fragment
 |-- routes                                
-|    +-- index.js                         <--- Express routers
-|-- app.js                                <--- Express app config
-|-- package.json                          <--- Node package descriptor
+|    +-- index.js           <--- Express routers
+|-- app.js                  <--- Express app config
+|-- package.json            <--- Node package descriptor
 
 ```
+The core component is a loader that controls what get injected asynchronously to the client document and the order of loading. 
+
 ## Implementation Guidelines
 It is assumed that the layout to be implemented as a service will be imported from an existing website since nearly all organizations already have a web presence. In simplest case the import task involves no more than copy & paste files and HTML code fragments. Complexity arises when client-side Javascript needs to be executed to render header and footer. Following guidelines are drawn from converting an a real production web site:
 * HTML fragments and assets loaded by AJAX follow a different DOM parsing order. Events that works before may not get triggered at desired time. For example, jQuery `$(function(){})` block is executed when DOM is ready. But if header and footer are injected to the DOM by AJAX, then DOM *ready* event will be triggered prior to header and footer are available. To get the desired behavior, if jQuery is added to payload or if directly referenced by the document, *Unippear* will trigger a document-level custom event *headerLoaded* and *footerLoaded* when headers and footers are loaded, respectively. Javascript that depends on the readiness of header, for example, should then be enclosed in `$(document).on('headerLoaded')` instead.
