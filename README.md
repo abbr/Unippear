@@ -18,6 +18,7 @@ Large organizations often own many web sites, such as vanity sites, subsidiary s
 ## Live Demo
 
 ## Description
+### Structure
 *Unippear* runs on [Express](http://expressjs.com). Important folders and files  *Unippear* consists of are:
 ```
 /                           <--- app root
@@ -37,7 +38,8 @@ Large organizations often own many web sites, such as vanity sites, subsidiary s
 |-- app.js                  <--- Express app config
 |-- package.json            <--- Node package descriptor
 ```
-The core component is a loader that controls what assets (HTML, CSS, JS, IMG etc) get injected asynchronously to the client document and the order of loading. All assets should be stored in */public/assets*. The loader loads following assets automatically:
+### Loader
+*Unippear*'s core component is a loader that controls what assets (HTML, CSS, JS, IMG etc) get injected asynchronously to the client document and the order of loading. All assets should be stored in */public/assets*. The loader loads following assets automatically:
 
 1. All *assets/css* files sorted alphabetically, nested folders are allowed and sorted after file peers
 2. All *assets/js* files  sorted alphabetically, nested folders are allowed and sorted after file peers
@@ -48,7 +50,10 @@ To improve performance, all JS files are combined into one download by default. 
 
 The order of loading the assets is important. A good strategy needs to take performance and Javascript event processing model into account. CSS files are loaded in parallel. To ensure event handler is defined before event is triggered, the loader postpones loading header and footer only after all JS files have been loaded and evaluated. If JS files are not combined, then each JS file is loaded and evaluated in serial. Either combined JS or the first individual JS file is loaded in parallel with CSS files. Header and footer are also loaded in parallel.
 
-## Usage
+### Templating
+*Unippear* uses [EJS](https://github.com/tj/ejs) template engine. EJS view folder is set to */public*. Any file in */public* can be converted to EJS template by appending file extension *.ejs* to the file name. A EJS template performs context substitution. In particular, *Unippear* sets context variable `unippearHost` to  *&lt;protocol&gt;:// &lt;host_name&gt;:&lt;port&gt;* of *Unippear* service web app to allow fully qualified URL.
+
+### Usage
 
 *Unippear* layout is served by adding following Javascript to the member website page:
 ```
