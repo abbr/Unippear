@@ -24,15 +24,15 @@ app.use(bodyParser.urlencoded({
     extended: true
 }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, routes.publicFolderNm, 'static')));
+app.use(express.static(path.join(__dirname, routes.publicFolderNm, 'assets')));
 
 app.use('/', routes);
 
 app.use(function(req, res, next) {
-    require('fs').exists(path.join(__dirname, routes.publicFolderNm, 'static', req.path + '.ejs'), function(exists) {
+    require('fs').exists(path.join(__dirname, routes.publicFolderNm, 'assets', req.path + '.ejs'), function(exists) {
         if (exists) {
             res.type(path.extname(req.path));
-            res.render(path.join('static', req.path + '.ejs'), {
+            res.render(path.join('assets', req.path + '.ejs'), {
                 currHost: req.protocol + "://" + req.host
             });
 
