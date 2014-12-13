@@ -61,7 +61,7 @@ After you have checked out live demo, familiar with directory structure, underst
 3. launch *Unippear* by running `bin/www`. By default, the process listens on port 3000. To change port, either modify */bin/www* or set env PORT before launching node. Running *Node* as a service or setting up a front-end reverse proxy are beyond the scope of this document. It's easy to google a solution.
 
 ### Serving
-*Unippear* layout is served by adding following Javascript to the member website page:
+*Unippear* layout is served by adding following Javascript to a member website page:
 ```
 <script type="text/javascript" src="<your_unippearHost>/index.js"></script>
 <script type="text/javascript">
