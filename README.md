@@ -99,7 +99,7 @@ $(document).on('headerLoaded', function() {
     }
 });
 ```
-Note that options set by client is accessible from global variable *unippear*. Also note the code is in the handler of custom event *headerLoaded* rather than the built-in *ready* event of document. See [Best Practices](#Best-Practices) below for details.
+Note that options set by client is accessible from global variable *unippear*. Also note the code is in the handler of custom event *headerLoaded* rather than the built-in *ready* event of document. See [Best Practices](#best-practices) below for details.
 
 ## Best Practices
 It is assumed that the layout to be implemented as a service will be imported from an existing website since nearly all organizations already have a web presence. In simplest implementation the import task involves no more than copy & paste files and HTML code fragments. Complexity arises when client-side Javascript needs to be executed to render header and footer. Following guidelines are drawn from converting an a real production web site:
