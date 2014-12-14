@@ -51,20 +51,21 @@ To improve performance, all JS files are combined into one download by default. 
 The order of loading and parsing the assets is important. A good strategy needs to take performance and Javascript event processing model into account. CSS and JS files should be named in their desired parsing order. For example, prefix file names with 0-left-padded digits, such as 01_file1.js, 02_file2.js etc. CSS files are loaded in parallel. To ensure event handler is defined before event is triggered, the loader postpones loading header and footer only after all JS files have been loaded and evaluated. If JS files are not combined, then each JS file is loaded and evaluated in serial. Either combined JS or the first individual JS file is loaded in parallel with CSS files. Header and footer are also loaded in parallel.
 
 ### Templating
-*Unippear* uses [EJS](https://github.com/tj/ejs) template engine. EJS view folder is set to */public*. Any file in */public* can be converted to EJS template by appending file extension *.ejs* to the file name. An EJS template performs context substitution. In particular, *Unippear* sets context variable `unippearHost` to  *&lt;protocol&gt;:// &lt;host_name&gt;:&lt;port&gt;* of *Unippear* service web app to allow emitting fully qualified URL.
+*Unippear* uses [EJS](https://github.com/tj/ejs) template engine. EJS view folder is set to */public*. Any file in */public* can be converted to EJS template by appending file extension *.ejs* to the file name. An EJS template performs context substitution. In particular, *Unippear* sets context variable `unippearHost` to  *&lt;protocol&gt;:// &lt;host_name&gt;:&lt;port&gt;* of *Unippear* service web app to allow emitting fully qualified URL. The URL of an asset rendered by EJS template should not include the *.ejs* extension.
 
-As an example, suppose we imported a CSS asset from an existing website to file */public/assets/css/header.css*. The file contains
+As an example, suppose we imported a CSS asset from an existing website to file */public/assets/css/header.css*, which maps to URL *//&lt;my-unippearHost&gt;/css/header.css*. The file contains
 ```
 #logo {
 	background: url(/img/logo.png) no-repeat;
 }
 ```
-When this CSS is served to a client website, */img/logo.png* will be relative to the host  of client website, not *Unippear*. To let *Unippear* take control of the logo file, first copy the logo to */public/assets/img/logo.png*, then rename file *header.css* to *header.css.ext*, lastly change CSS to generate fully qualified URL:
+When this CSS is served to a client website, */img/logo.png* will be relative to the host  of client website, not *Unippear*. To let *Unippear* take control of the logo file, first copy the logo to */public/assets/img/logo.png*, then rename file *header.css* to *header.css.ext*, lastly change CSS to generate fully qualified logo URL:
 ```
 #logo {
 	background: url(<%=unippearHost%>/img/logo.png) no-repeat;
 }
 ```
+The URL of *header.css* remains to be *//&lt;my-unippearHost&gt;/css/header.css*.
 ### Implementation
 After you have checked out live demo, familiar with directory structure, understood the function of loader and EJS template engine, you can build your site layout service by:
 
