@@ -1,6 +1,7 @@
 function unippear(opts) {
   unippear = opts || {};
-  unippear.headerFooterContainer = unippear.headerFooterContainer || 'body';
+  unippear.headerContainer = unippear.headerContainer || 'body';
+  unippear.footerContainer = unippear.footerContainer || 'body';
   unippear.headerHtmlFragment = '<%-unippearHost%>/header.html';
   unippear.footerHtmlFragment = '<%-unippearHost%>/footer.html';
 
@@ -24,7 +25,7 @@ function unippear(opts) {
         // download header and footer after js are loaded
         $jQ.get(opts.headerHtmlFragment, function(data) {
           try {
-            $jQ(unippear.headerFooterContainer).first().prepend(data);
+            $jQ(unippear.headerContainer).first().prepend(data);
           }
           catch (err) {}
           try {
@@ -36,7 +37,7 @@ function unippear(opts) {
         });
         $jQ.get(opts.footerHtmlFragment, function(data) {
           try {
-            $jQ(unippear.headerFooterContainer).first().append(data);
+            $jQ(unippear.footerContainer).first().append(data);
           }
           catch (err) {}
           try {
@@ -52,7 +53,7 @@ function unippear(opts) {
         // download header and footer after js are loaded
         $jQ.get(opts.headerHtmlFragment, function(data) {
           try {
-            $jQ(unippear.headerFooterContainer).first().prepend(data);
+            $jQ(unippear.headerContainer).first().prepend(data);
           }
           catch (err) {}
           try {
@@ -62,7 +63,7 @@ function unippear(opts) {
         });
         $jQ.get(opts.footerHtmlFragment, function(data) {
           try {
-            $jQ(unippear.headerFooterContainer).first().append(data);
+            $jQ(unippear.footerContainer).first().append(data);
           }
           catch (err) {}
           try {
