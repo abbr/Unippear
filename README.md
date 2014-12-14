@@ -43,8 +43,8 @@ Large organizations often own many web sites, such as vanity sites, subsidiary s
 
 1. All *assets/css* files sorted alphabetically, nested folders are allowed and sorted after file peers. A CSS file is loaded by appending a stylesheet *&lt;link&gt;* HTML element to the document *&lt;head&gt;*.
 2. All *assets/js* files  sorted alphabetically, nested folders are allowed and sorted after file peers. A JS file is downloaded and evaluated by calling [jQuery.getScript()](http://api.jquery.com/jquery.getscript/). Caching is set to true prior to calling the method.
-3. *assets/header.html* loaded by calling [jQuery.get()](http://api.jquery.com/jquery.get/). By default header is prepended to document *&lt;body&gt;*. The container element can be changed by setting *headerContainer* option when client site invoking the loader. See [Customization](#customization) for details.
-4. *assets/footer.html* loaded and inserted same way as *assets/header.html* except that footer is appended to the container set by *footerContainer* option.
+3. *assets/header.html* containing header HTML fragment loaded by calling [jQuery.get()](http://api.jquery.com/jquery.get/). By default header is prepended to document *&lt;body&gt;*. The container element can be changed by setting *headerContainer* option when client site invoking the loader. See [Customization](#customization) for details.
+4. *assets/footer.html*  containing footer HTML fragment loaded and inserted same way as *assets/header.html* except that footer is appended to the container set by *footerContainer* option.
 
 To improve performance, all JS files are combined into one download by default. If individual download is desirable, say for debugging purpose, it can be enabled by toggling `routes.combineJs` to `false` in */app.js*.
 
