@@ -16,6 +16,7 @@ Large organizations often own many web sites, such as vanity sites, subsidiary s
 * Security: Only pre-registered client sites can use the service. 
 
 ## Live Demo
+Take a look at [live demo](https://unippear.herokuapp.com/test.html) hosted on Heroku.
 
 ## Description
 ### Structure
@@ -103,7 +104,7 @@ unippear({
    "footerContainer": "#root"
 });
 ```
-The value of *headerContainer* and *footerContainer* follows jQuery [selector](http://api.jquery.com/category/selectors/) syntax. If multiple elements match, the first element is chosen.
+The value of *headerContainer* and *footerContainer* follows jQuery [selector](http://api.jquery.com/category/selectors/) syntax. If multiple elements match the selector, the first element is chosen.
 
 Other options allowed is implementation specific. For example, if in your implementation, header contains an optional search box and it's up to a client site to decide whether or not to show the searchBox, then you can support an option called *showSearchBox*. A client site that wants to hide search box can call *unippear* this way:
 ```
@@ -120,7 +121,7 @@ $(document).on('headerLoaded', function() {
     }
 });
 ```
-Note that options set by client is accessible from global variable *unippear*. Also note the code is in the handler of custom event *headerLoaded* rather than the built-in *ready* event of document. More on this in [Best Practice](#best-practice) below.
+Note that options set by client is accessible from global variable *unippear*. Also note the code is in the handler of custom event *headerLoaded* rather than the built-in *ready* event of document. More on this topic in [Best Practice](#best-practice) below.
 
 ## Best Practice
 It is assumed that the layout to be implemented as a service will be imported from an existing website since nearly all organizations already have a web presence. In simplest implementation the import task involves no more than copy & paste files and HTML code fragments. Complexity arises when client-side Javascript needs to be executed to render header and footer. Following guidelines are drawn from converting an a real production web site:
