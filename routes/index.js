@@ -10,9 +10,10 @@ var etag = require('etag');
 /* GET home page. */
 router.get('/index.js', function(req, res) {
     res.type('application/javascript');
-    recursive('../' + router.publicFolderNm + '/assets/css', function(err, files) {
-        var cssFiles = files.map(function(v) {
-            return req.protocol + "://" + req.host + v.substring(router.publicFolderNm.length + 10).replace(/\.ejs$/, '');
+    var cssPath = path.join(__dirname, '../', router.publicFolderNm, '/assets/css');
+    recursive(cssPath, function(err, files) {
+        var cssFiles = (files || []).map(function(v) {
+            return req.protocol + "://" + req.host + v.substring(cssPath.length - 4).replace(/\.ejs$/, '');
         });
         if (router.combineJs) {
             res.render('api/index', {
@@ -21,9 +22,10 @@ router.get('/index.js', function(req, res) {
             });
             return;
         }
-        recursive('../' + router.publicFolderNm + '/assets/js', function(err, files) {
-            var jsFiles = files.map(function(v) {
-                return v.substring(router.publicFolderNm.length + 14).replace(/\.ejs$/, '');
+        var jsPath = path.join(__dirname, '../', router.publicFolderNm, '/assets/js');
+        recursive(jsPath, function(err, files) {
+            var jsFiles = (files || []).map(function(v) {
+                return v.substring(jsPath.length).replace(/\.ejs$/, '');
             });
             res.render('api/index', {
                 "unippearHost": req.protocol + "://" + req.host,
@@ -36,7 +38,8 @@ router.get('/index.js', function(req, res) {
 
 router.get('/combined.js', function(req, res) {
     res.type('application/javascript');
-    recursive(path.resolve('../' + router.publicFolderNm + '/assets/js'), function(err, files) {
+    var jsPath = path.join(__dirname, '../', router.publicFolderNm, '/assets/js');
+    recursive(path.resolve(jsPath), function(err, files) {
         async.map(files, fs.readFile, function(err, outputs) {
             if (err) {
                 console.error(err);
