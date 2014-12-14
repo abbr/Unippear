@@ -133,4 +133,5 @@ It is assumed that the layout to be implemented as a service will be imported fr
 * Allow multiple themes
 
 ## Installation
+If you have [Node](http://nodejs.org/) installed, simply run
 ```npm install unippear```
