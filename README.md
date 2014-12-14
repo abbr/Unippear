@@ -109,4 +109,4 @@ It is assumed that the layout to be implemented as a service will be imported fr
 * Allow multiple themes
 
 ## Installation
-```npm install site-layout-service```
+```npm install unippear```
