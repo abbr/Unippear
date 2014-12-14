@@ -70,9 +70,9 @@ The URL of *header.css* remains to be *//&lt;my-unippearHost&gt;/css/header.css*
 ### Implementation
 After you have checked out live demo, familiar with directory structure, understood the function of loader and EJS template engine, you can build your site layout service by:
 
-1. [installing](#Installation) *Unippear*
+1. [installing](#installation) *Unippear*
 2. replacing files in */public/assets* with your own assets.
-3. launch *Unippear* by running `bin/www`. By default, the process listens on port 3000. To change port, either modify */bin/www* or set env PORT before launching node. Running *Node* as a service or setting up a front-end reverse proxy are beyond the scope of this document. It's easy to google a solution.
+3. launching *Unippear* by running `bin/www`. By default, the process listens on port 3000. To change port, either modify */bin/www* or set env PORT before launching node. Running *Node* as a service or setting up a front-end reverse proxy are beyond the scope of this document. It's easy to google a solution.
 
 ### Serving
 *Unippear* layout is served by adding following Javascript to a client website page:
