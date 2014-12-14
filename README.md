@@ -41,9 +41,9 @@ Large organizations often own many web sites, such as vanity sites, subsidiary s
 ### Loader
 *Unippear*'s core component is a loader that controls what assets (HTML, CSS, JS, IMG etc) get injected asynchronously to the client document and the order of loading. All assets should be stored in */public/assets*. The loader loads following assets by performing respective operations:
 
-1. All *assets/css* files sorted alphabetically, nested folders are allowed and sorted after file peers. A CSS file is loaded by appending a stylesheet *<link>* HTML element to the document *<head>*.
+1. All *assets/css* files sorted alphabetically, nested folders are allowed and sorted after file peers. A CSS file is loaded by appending a stylesheet *&lt;link&gt;* HTML element to the document *&lt;head&gt;*.
 2. All *assets/js* files  sorted alphabetically, nested folders are allowed and sorted after file peers. A JS file is loaded by calling [jQuery.getScript()](http://api.jquery.com/jquery.getscript/). Caching is set to true prior to calling the method.
-3. *assets/header.html* loaded by calling [jQuery.get()](http://api.jquery.com/jquery.get/). By default header is prepended to document *<body>*. The container element can be changed by setting *headerFooterContainer* option when client site invoking the loader. See [Customization](#customization) for details.
+3. *assets/header.html* loaded by calling [jQuery.get()](http://api.jquery.com/jquery.get/). By default header is prepended to document *&lt;body&gt;*. The container element can be changed by setting *headerFooterContainer* option when client site invoking the loader. See [Customization](#customization) for details.
 4. *assets/footer.html* loaded and inserted same way as *assets/header.html* except that footer is appended to the container.
 
 To improve performance, all JS files are combined into one download by default. If individual download is desirable, say for debugging purpose, it can be enabled by toggling `routes.combineJs` to `false` in */app.js*.
@@ -84,7 +84,7 @@ After you have checked out live demo, familiar with directory structure, underst
 ```
 
 ### Customization
-The call to `unippear()` can take an option parameter. Out of the box *Unippear* only supports one option - *headerFooterContainer* to specify which DOM element should header and footer be inserted into. When omitted, header and footer are inserted into *<body>*. If, for example, a client site HTML page has following DOM:
+The call to `unippear()` can take an option parameter. Out of the box *Unippear* only supports one option - *headerFooterContainer* to specify which DOM element should header and footer be inserted into. When omitted, header and footer are inserted into *&lt;body&gt;*. If, for example, a client site HTML page has following DOM:
 ```
 <!doctype html>
 <html lang="en">
@@ -96,7 +96,7 @@ The call to `unippear()` can take an option parameter. Out of the box *Unippear*
   </body>
 </html>
 ```
-and it is desirable to insert header and footer to *<div>* with ID *root*, then call `unippear()` with:
+and it is desirable to insert header and footer to *&lt;div&gt;* with ID *root*, then call `unippear()` with:
 ```
 unippear({
    "headerFooterContainer": "#root"
