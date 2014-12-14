@@ -4,9 +4,9 @@ Unippear
 Enforce consistent look-and-feel to multiple enterprise websites through centralized layout manager service.
 
 ## Motivation
-Large organizations often own many web sites, such as vanity sites, subsidiary sites etc, in addition to home portal. Maintaining a consistent look-and-feel for branding purpose is often desirable, sometimes even mandatory. In early days when most websites were built with static HTML files, consistency is achieved through distributing a set of template files to member sites. Nowadays a lot of sites are built on a server-side scripting platform employing some sort of template engines. For this template sharing solution to work, adapting the template to a specific engine is unavoidable. However, this conversion effort not only takes time, but also prone to breaking the consistency. Besides, coordinating template upgrade could also be a challenge.
+Large organizations often own many web sites, such as vanity sites, subsidiary sites etc, in addition to home portal. Maintaining a consistent look-and-feel for branding purpose is often desirable, sometimes even mandatory. In early days when most websites were built with static HTML files, consistency is achieved through distributing a set of template files to client sites. Nowadays a lot of sites are built on a server-side scripting platform employing some sort of template engines. For this template sharing solution to work, adapting the template to a specific engine is unavoidable. However, this conversion effort not only takes time, but also prone to breaking the consistency. Besides, coordinating template upgrade could also be a challenge.
 
-*Unippear* addresses these problems through a service oriented architecture (SOA) that takes advantage of Web 2.0 AJAX technology. The layout templates are managed in a centralized API service web app. A member site applies the layout by adding a few lines of Javascript code to invoke the service. This centralized service approach helps enforcing core look-and-feel, yet still gives site builder some degree of freedom to customize presentation through optional configurations.
+*Unippear* addresses these problems through a service oriented architecture (SOA) that takes advantage of Web 2.0 AJAX technology. The layout templates are managed in a centralized API service web app. A client site applies the layout by adding a few lines of Javascript code to invoke the service. This centralized service approach helps enforcing core look-and-feel, yet still gives site builder some degree of freedom to customize presentation through optional configurations.
 
 ## Features
 * Enforcing consistent header and footer across multiple websites.
@@ -73,7 +73,7 @@ After you have checked out live demo, familiar with directory structure, underst
 3. launch *Unippear* by running `bin/www`. By default, the process listens on port 3000. To change port, either modify */bin/www* or set env PORT before launching node. Running *Node* as a service or setting up a front-end reverse proxy are beyond the scope of this document. It's easy to google a solution.
 
 ### Serving
-*Unippear* layout is served by adding following Javascript to a member website page:
+*Unippear* layout is served by adding following Javascript to a client website page:
 ```
 <script type="text/javascript" src="<your-unippearHost>/index.js"></script>
 <script type="text/javascript">
@@ -82,7 +82,7 @@ After you have checked out live demo, familiar with directory structure, underst
 ```
 
 ### Customization
-The call to `unippear()` can take an option parameter. What options are allowed is implementation specific. For example, if in your implementation, it is determined that the search box in the header is optional and it's up to each member site to decide whether or not to show the searchBox, then you can support an option called *showSearchBox*. A member site that wants to hide search box can call *unippear* this way:
+The call to `unippear()` can take an option parameter. What options are allowed is implementation specific. For example, if in your implementation, it is determined that the search box in the header is optional and it's up to each client site to decide whether or not to show the searchBox, then you can support an option called *showSearchBox*. A client site that wants to hide search box can call *unippear* this way:
 ```
 unippear({
    "showSearchBox": false
