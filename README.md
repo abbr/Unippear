@@ -77,7 +77,7 @@ After you have checked out live demo, familiar with directory structure, underst
 ### Serving
 *Unippear* layout is served by adding following Javascript to a client website page:
 ```
-<script type="text/javascript" src="<your-unippearHost>/index.js"></script>
+<script type="text/javascript" src="//<your-unippearHost>/index.js"></script>
 <script type="text/javascript">
     unippear();
 </script>
