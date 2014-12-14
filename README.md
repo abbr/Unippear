@@ -104,7 +104,7 @@ unippear({
 ```
 The value of *headerFooterContainer* follows jQuery [selector](http://api.jquery.com/category/selectors/) syntax. If multiple elements match, the first element is chosen.
 
-Other options allowed is implementation specific. For example, if in your implementation, it is determined that the search box in the header is optional and it's up to a client site to decide whether or not to show the searchBox, then you can support an option called *showSearchBox*. A client site that wants to hide search box can call *unippear* this way:
+Other options allowed is implementation specific. For example, if in your implementation, header contains an optional search box and it's up to a client site to decide whether or not to show the searchBox, then you can support an option called *showSearchBox*. A client site that wants to hide search box can call *unippear* this way:
 ```
 unippear({
    "showSearchBox": false
@@ -119,7 +119,7 @@ $(document).on('headerLoaded', function() {
     }
 });
 ```
-Note that options set by client is accessible from global variable *unippear*. Also note the code is in the handler of custom event *headerLoaded* rather than the built-in *ready* event of document. See [Best Practice](#best-practice) below for details.
+Note that options set by client is accessible from global variable *unippear*. Also note the code is in the handler of custom event *headerLoaded* rather than the built-in *ready* event of document. More on this in [Best Practice](#best-practice) below.
 
 ## Best Practice
 It is assumed that the layout to be implemented as a service will be imported from an existing website since nearly all organizations already have a web presence. In simplest implementation the import task involves no more than copy & paste files and HTML code fragments. Complexity arises when client-side Javascript needs to be executed to render header and footer. Following guidelines are drawn from converting an a real production web site:
