@@ -99,10 +99,11 @@ $(document).on('headerLoaded', function() {
     }
 });
 ```
-Note that options set by client is accessible from global variable *unippear*. Also note the code is in the handler of custom event *headerLoaded* rather than the built-in *ready* event of document. See [Implementation Guidelines](#implementation-guidelines) below for details.
+Note that options set by client is accessible from global variable *unippear*. Also note the code is in the handler of custom event *headerLoaded* rather than the built-in *ready* event of document. See [Best Practices](#Best-Practices) below for details.
 
-## Implementation Guidelines
+## Best Practices
 It is assumed that the layout to be implemented as a service will be imported from an existing website since nearly all organizations already have a web presence. In simplest implementation the import task involves no more than copy & paste files and HTML code fragments. Complexity arises when client-side Javascript needs to be executed to render header and footer. Following guidelines are drawn from converting an a real production web site:
+* It is recommended to add a version of jQuery to JS asset folder and order it on top. Other library or means to manipulate DOM is acceptable but you need to implement your own custom event trigger in the loader.
 * HTML fragments and assets loaded by AJAX follow a different DOM parsing order. Events that works before may not get triggered at desired time. For example, jQuery `$(function(){})` block is executed when DOM is ready. But if header and footer are injected to the DOM by AJAX, then DOM *ready* event will be triggered prior to header and footer are available. To get the desired behavior, if jQuery is added to payload or if directly referenced by the document, *Unippear* will trigger a document-level custom event *headerLoaded* and *footerLoaded* when headers and footers are loaded, respectively. Javascript that depends on the readiness of header, for example, should then be enclosed in `$(document).on('headerLoaded')` instead.
 * When a HTML fragment is injected into DOM by AJAX, some browsers prevent inline Javascript in the fragment to be executed. Therefore header and footer HTML fragment should be free of inline Javascript.
 * If total size of JS files are large, consider using [AMD](http://en.wikipedia.org/wiki/Asynchronous_module_definition). If so, only put AMD engine such as RequireJS and the bootstrap code in */public/assets/js*. AMD modules should be saved in another folder under */public/assets*, say */public/assets/modules*.
