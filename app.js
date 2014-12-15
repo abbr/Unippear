@@ -42,7 +42,7 @@ app.use(function(req, res, next) {
         if (!validClients.some(function(v) {
                 return v.test(req.headers.referer);
             })) {
-            return res.send(403);
+            return res.status(403).end();
         }
     }
 
@@ -61,8 +61,11 @@ app.use(function(req, res, next) {
             res.header('Access-Control-Max-Age', 86400);
             // intercept preflight OPTIONS method
             if (req.method === 'OPTIONS') {
-                return res.send(200);
+                return res.status(200).end();
             }
+        }
+        else {
+            return res.status(403).end();
         }
     }
     next();
