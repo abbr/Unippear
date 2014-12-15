@@ -37,6 +37,7 @@ Take a look at [live demo](https://unippear.herokuapp.com/test.html) hosted on H
 |-- routes                                
 |    +-- index.js           <--- Express routers
 |-- app.js                  <--- Express app config
+|-- client-whitelist.json   <--- a list of RegEx patterns of allowed clients
 |-- package.json            <--- Node package descriptor
 ```
 ### Loader
@@ -68,15 +69,19 @@ When this CSS is served to a client website, */img/logo.png* will be relative to
 ```
 The URL of *header.css* remains to be *//&lt;my-unippearHost&gt;/css/header.css*.
 
+### Access Control
+Without access control, an external site can easily spoof yours. *Unippear* prevents unauthorized access by validating the incoming request against a whitelist in file */client-whitelist.json*. If the *Referer* or *Origin* (used by CORS) request header are supplied, then they must match at least one RegEx patterns of the whitelist.
+
 ### Implementation
-After you have checked out live demo, familiar with directory structure, understood the function of loader and EJS template engine, you can build your site layout service by:
+After you have checked out live demo, familiar with directory structure, loader, EJS template engine and access control, you can build your site layout service by:
 
 1. [installing](#installation) *Unippear*
 2. replacing files in */public/assets* with your own assets.
-3. launching *Unippear* by running `bin/www`. By default, the process listens on port 3000. To change port, either modify */bin/www* or set env PORT before launching node. Running *Node* as a service or setting up a front-end reverse proxy are beyond the scope of this document. It's easy to google a solution.
+3. updating /client-whitelist.json with a list of authorized client URL patterns.
+4. launching *Unippear* by running `bin/www`. By default, the process listens on port 3000. To change port, either modify */bin/www* or set env PORT before launching node. Running *Node* as a service or setting up a front-end reverse proxy are beyond the scope of this document. It's easy to google a solution.
 
 ### Serving
-*Unippear* layout is served by adding following Javascript to a client website page:
+*Unippear* layout is served by adding following Javascript to an authorized client website page:
 ```
 <script type="text/javascript" src="//<your-unippearHost>/index.js"></script>
 <script type="text/javascript">
