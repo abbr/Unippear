@@ -70,7 +70,7 @@ When this CSS is served to a client website, */img/logo.png* will be relative to
 The URL of *header.css* remains to be *//&lt;my-unippearHost&gt;/css/header.css*.
 
 ### Access Control
-Without access control, an external site can easily spoof yours. *Unippear* prevents unauthorized access by validating the incoming request against a whitelist in file */client-whitelist.json*. If the *Referer* or *Origin* (used by CORS) request header are supplied, then they must match at least one RegEx patterns of the whitelist.
+Without access control, an external site can easily spoof yours. *Unippear* prevents unauthorized access by validating the incoming request against a whitelist in file */client-whitelist.json*. If *Referer* and/or *Origin* (used by CORS) request headers are supplied, they must match at least one RegEx patterns of the whitelist.
 
 ### Implementation
 After you have checked out live demo, familiar with directory structure, loader, EJS template engine and access control, you can build your site layout service by:
