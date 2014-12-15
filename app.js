@@ -4,6 +4,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var fs = require('fs');
 
 var routes = require('./routes/index');
 routes.publicFolderNm = 'public';
@@ -24,6 +25,49 @@ app.use(bodyParser.urlencoded({
     extended: true
 }));
 app.use(cookieParser());
+
+//CORS and Referer validation
+var validClients = [".*"];
+try {
+    validClients = JSON.parse(fs.readFileSync(path.join(__dirname, 'client-whitelist.json')).toString()).validClients;
+}
+catch (err) {}
+validClients = validClients.map(function(v) {
+    return new RegExp(v);
+});
+
+app.use(function(req, res, next) {
+    // Referer
+    if (req.headers.referer) {
+        if (!validClients.some(function(v) {
+                return v.test(req.headers.referer);
+            })) {
+            return res.send(403);
+        }
+    }
+
+    if (req.headers.origin) {
+        if (validClients.some(function(v) {
+                return v.test(req.headers.origin);
+            })) {
+            res.header('Access-Control-Allow-Origin', req.headers.origin);
+            if (req.headers['access-control-request-method']) {
+                res.header('Access-Control-Allow-Methods', req.headers['access-control-request-method']);
+            }
+            if (req.headers['access-control-request-headers']) {
+                res.header('Access-Control-Allow-Headers', req.headers['access-control-request-headers']);
+            }
+            // preflight caching age set to 1 day
+            res.header('Access-Control-Max-Age', 86400);
+            // intercept preflight OPTIONS method
+            if (req.method === 'OPTIONS') {
+                return res.send(200);
+            }
+        }
+    }
+    next();
+});
+
 app.use(express.static(path.join(__dirname, routes.publicFolderNm, 'assets')));
 
 app.use('/', routes);

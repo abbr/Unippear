@@ -1,0 +1,4 @@
+{
+    "_comment": "validClients is an array of escaped URL RegExp strings, for example [\"^https?://.*\\.?mycorp\\.com\"]",
+    "validClients": ["^https?://.*\\.?c9\\.io"]
+}
