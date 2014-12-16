@@ -2,8 +2,8 @@ function unippear(opts) {
   unippear = opts || {};
   unippear.headerContainer = unippear.headerContainer || 'body';
   unippear.footerContainer = unippear.footerContainer || 'body';
-  unippear.headerHtmlFragment = '<%-unippearHost%><%=thisFilePath%>/header.html';
-  unippear.footerHtmlFragment = '<%-unippearHost%><%=thisFilePath%>/footer.html';
+  unippear.headerHtmlFragment = '<%-unippearHost%><%=thisFileUrlPath%>/header.html';
+  unippear.footerHtmlFragment = '<%-unippearHost%><%=thisFileUrlPath%>/footer.html';
 
   <% include jquery.js %>
     $jQ = $.noConflict(true);
@@ -20,7 +20,7 @@ function unippear(opts) {
     <%
     if (locals.jsFiles) {
       jsFiles.forEach(function(f) { %>
-        $jQ.getScript("<%=unippearHost%><%=thisFilePath%>/js/<%=f%>").done(function() { <%
+        $jQ.getScript("<%=unippearHost%><%=thisFileUrlPath%>/js/<%=f%>").done(function() { <%
         }); %>
         // download header and footer after js are loaded
         $jQ.get(opts.headerHtmlFragment, function(data) {
@@ -49,7 +49,7 @@ function unippear(opts) {
       });
     }
     else { %>
-      $jQ.getScript("<%=unippearHost%><%=thisFilePath%>/combined.js").done(function() {
+      $jQ.getScript("<%=unippearHost%><%=thisFileUrlPath%>/combined.js").done(function() {
         // download header and footer after js are loaded
         $jQ.get(opts.headerHtmlFragment, function(data) {
           try {

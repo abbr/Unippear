@@ -18,7 +18,7 @@ router.get('*/index.js', function(req, res) {
         if (router.combineJs) {
             res.render('api/index', {
                 "unippearHost": req.protocol + "://" + req.host,
-                "thisFilePath": req.params[0],
+                "thisFileUrlPath": req.params[0],
                 "cssFiles": cssFiles
             });
             return;
@@ -30,7 +30,7 @@ router.get('*/index.js', function(req, res) {
             });
             res.render('api/index', {
                 "unippearHost": req.protocol + "://" + req.host,
-                "thisFilePath": req.params[0],
+                "thisFileUrlPath": req.params[0],
                 "jsFiles": jsFiles,
                 "cssFiles": cssFiles
             });
@@ -58,7 +58,7 @@ router.get('*/combined.js', function(req, res) {
                 if (path.extname(files[idx]) === '.ejs') {
                     output = ejs.render(output, {
                         "unippearHost": req.protocol + "://" + req.host,
-                        "thisFilePath": path.dirname(files[idx]).substring(path.join(__dirname, '../', router.publicFolderNm, 'assets').length)
+                        "thisFileUrlPath": path.dirname(files[idx]).substring(path.join(__dirname, '../', router.publicFolderNm, 'assets').length)
                     });
                 }
                 cnt += output + '\n';
@@ -81,7 +81,7 @@ router.get('*/*', function(req, res, next) {
             res.type(path.extname(req.path));
             res.render(path.join('assets', req.path + '.ejs'), {
                 unippearHost: req.protocol + "://" + req.host,
-                "thisFilePath": req.params[0]
+                "thisFileUrlPath": req.params[0]
             });
         }
         else {
