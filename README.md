@@ -55,7 +55,7 @@ To improve performance, all JS files are combined into one download by default. 
 The order of loading and parsing the assets is important. A good strategy needs to take performance and Javascript event processing model into account. CSS and JS files should be named in their desired parsing order by, for example, prefixing file names with 0-left-padded digits such as 01_file1.js, 02_file2.js etc. CSS files are loaded in parallel. To ensure event handler is defined before event is triggered, the loader postpones loading header and footer only after all JS files have been loaded and evaluated. If JS files are not combined, then each JS file is loaded and evaluated in serial. Either combined JS or the first individual JS file is loaded in parallel with CSS files. Header and footer are also loaded in parallel.
 
 ### Versioning and Theming (Optional)
-Versioning and theming provide ways to partition and group assets under */public/assets*. *Unippear* doesn't recognize the concepts of versioning and theming other than treating them all as sub-folders. For example, in an implementation where multiple themes are provided in a version, the folder structure could look like:
+Versioning and theming provide ways to partition and group assets under */public/assets*. *Unippear* doesn't recognize the concepts of versioning and theming other than treating them as sub-folders. For example, in an implementation where multiple themes are provided under a version, the folder structure could look like:
 
 ```
 /public/assets
@@ -76,7 +76,7 @@ Versioning and theming provide ways to partition and group assets under */public
  +-- latest  <--- symbolic link pointing to /public/assets/v2
 
 ```
-Note a *latest* symbolic folder is provided pointing to latest version (v2) to support auto-upgrade.
+Note a *latest* symbolic folder can be provided pointing to latest version (v2) to support auto-upgrade.
 
 ### Templating
 *Unippear* uses [EJS](https://github.com/tj/ejs) template engine. EJS view folder is set to */public*. Any file in */public* can be converted to EJS template by appending file extension *.ejs* to the file name. An EJS template performs context substitution. In particular, *Unippear* supplies two context variables: 
@@ -104,7 +104,7 @@ The URL of *header.css* remains to be *//&lt;my-unippearHost&gt;/v1/theme1/css/h
 Without access control, an external site can easily spoof yours. *Unippear* prevents unauthorized access by validating the incoming request against a whitelist in file */client-whitelist.json*. If *Referer* and/or *Origin* (used by CORS) request headers are supplied, they must match at least one RegEx patterns of the whitelist.
 
 ### Implementation
-After you have checked out live demo, familiar with directory structure, loader, EJS template engine and access control, you can build your site layout service by:
+After you have checked out live demo and familiarized with the topics described above, you can build your site layout service by:
 
 1. [installing](#installation) *Unippear*
 2. replacing files in */public/assets* with your own assets.
@@ -166,9 +166,7 @@ It is assumed that the layout to be implemented as a service will be imported fr
 * When a HTML fragment is injected into DOM by AJAX, some browsers skip evaluating inline Javascript in the fragment. Therefore header and footer HTML fragment should be free of inline Javascript.
 * If total size of JS files is large, consider using [AMD](http://en.wikipedia.org/wiki/Asynchronous_module_definition). If so, only put AMD engine such as RequireJS and the bootstrap code in */public/assets/&lt;version/theme&gt;/js*. Save AMD modules in another folder under */public/assets/&lt;version/theme&gt;*, say */public/assets/&lt;version/theme&gt;/modules*.
 * If a client site is composed of multiple pages and no templating engine is used to help eliminate code duplication, the call to `unippear()` should be factored out to a client-side JS file rather than  defined inline to facilitate changing option parameter in the future. 
-
-## Planned Enhancements
-* Allow multiple themes
+* A client site usually needs some regression test before upgrading to a new layout version. The *latest* symbolic link should be advertised precautiously unless you can guarantee backward compatibility.
 
 ## Installation
 If you have [Node](http://nodejs.org/) installed, simply run
