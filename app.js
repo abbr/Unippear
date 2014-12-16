@@ -8,7 +8,7 @@ var fs = require('fs');
 
 var routes = require('./routes/index');
 routes.publicFolderNm = 'public';
-routes.combineJs = true;
+routes.combineJs = false;
 var app = express();
 
 // view engine setup
@@ -75,21 +75,6 @@ app.use(function(req, res, next) {
 app.use(express.static(path.join(__dirname, routes.publicFolderNm, 'assets')));
 
 app.use('/', routes);
-
-app.use(function(req, res, next) {
-    require('fs').exists(path.join(__dirname, routes.publicFolderNm, 'assets', req.path + '.ejs'), function(exists) {
-        if (exists) {
-            res.type(path.extname(req.path));
-            res.render(path.join('assets', req.path + '.ejs'), {
-                unippearHost: req.protocol + "://" + req.host
-            });
-
-        }
-        else {
-            next();
-        }
-    });
-});
 
 
 /// catch 404 and forward to error handler
