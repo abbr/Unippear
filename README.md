@@ -13,6 +13,7 @@ Large organizations often own many web sites, such as vanity sites, subsidiary s
 * Allowing per-site customization through optional configurations.
 * Expediting Javascript downloading by auto combining all Javascript files into one download with Etag caching.
 * Layout versioning: A website can choose either ties to a specific layout version or always uses the latest version.
+* Theming: Multiple themes are allowed in each version.
 * Security: Only pre-registered client sites can use the service. 
 
 ## Live Demo
@@ -22,23 +23,24 @@ Take a look at [live demo](https://unippear.herokuapp.com/test.html) hosted on H
 ### Structure
 *Unippear* runs on [Express](http://expressjs.com). Important folders and files  *Unippear* consists of are:
 ```
-/                           <--- app root
+/                           	<--- app root
 |-- bin                                   
-|    +-- www                <--- app startup script
-|-- public                  <--- Express view folder
+|    +-- www                	<--- app startup script
+|-- public                  	<--- Express view folder
 |    |-- api                
-|    |    |-- index.ejs     <--- loader
-|    |    |-- jquery.ejs    <--- jquery to be imbeded into index.ejs used by loader only
-|    |-- assets             <--- assets folder
-|    |    |-- css           <--- css folder
-|    |    |-- js            <--- js folder
-|    |    |-- footer.html   <--- footer HTML fragment
-|    |    |-- header.html   <--- header HTML fragment
+|    |    |-- index.ejs     	<--- loader
+|    |    |-- jquery.ejs    	<--- jquery to be imbeded into index.ejs used by loader only
+|    |-- assets             	<--- assets folder
+|    |    |-- <version>/<theme> <--- optional version/theme levels
+|    |    |    |-- css          <--- css folder
+|    |    |    |-- js           <--- js folder
+|    |    |    |-- footer.html  <--- footer HTML fragment
+|    |    |    |-- header.html  <--- header HTML fragment
 |-- routes                                
-|    +-- index.js           <--- Express routers
-|-- app.js                  <--- Express app config
-|-- client-whitelist.json   <--- a list of RegEx patterns of allowed clients
-|-- package.json            <--- Node package descriptor
+|    +-- index.js           	<--- Express routers
+|-- app.js                  	<--- Express app config
+|-- client-whitelist.json   	<--- a list of RegEx patterns of allowed clients
+|-- package.json            	<--- Node package descriptor
 ```
 ### Loader
 *Unippear*'s core component is a loader that controls what assets (HTML, CSS, JS, IMG etc) get injected asynchronously to the client document and the order of loading. All assets should be stored in */public/assets*. The loader loads following assets by performing respective operations:
@@ -52,22 +54,51 @@ To improve performance, all JS files are combined into one download by default. 
 
 The order of loading and parsing the assets is important. A good strategy needs to take performance and Javascript event processing model into account. CSS and JS files should be named in their desired parsing order by, for example, prefixing file names with 0-left-padded digits such as 01_file1.js, 02_file2.js etc. CSS files are loaded in parallel. To ensure event handler is defined before event is triggered, the loader postpones loading header and footer only after all JS files have been loaded and evaluated. If JS files are not combined, then each JS file is loaded and evaluated in serial. Either combined JS or the first individual JS file is loaded in parallel with CSS files. Header and footer are also loaded in parallel.
 
-### Templating
-*Unippear* uses [EJS](https://github.com/tj/ejs) template engine. EJS view folder is set to */public*. Any file in */public* can be converted to EJS template by appending file extension *.ejs* to the file name. An EJS template performs context substitution. In particular, *Unippear* sets context variable `unippearHost` to  *&lt;protocol&gt;:// &lt;host_name&gt;:&lt;port&gt;* of *Unippear* service web app to allow emitting fully qualified URL. The URL of an asset rendered by EJS template should not include the *.ejs* extension.
+### Versioning and Theming (Optional)
+Versioning and theming provide ways to partition and group assets under */public/assets*. *Unippear* doesn't recognize the concepts of versioning and theming other than treating them all as sub-folders. For example, in an implementation where multiple themes are provided in a version, the folder structure could look like:
 
-As an example, suppose we imported a CSS asset from an existing website to file */public/assets/css/header.css*, which maps to URL *//&lt;my-unippearHost&gt;/css/header.css*. The file contains
+```
+/public/assets
+ |-- v1
+ |    |-- theme1
+ |    |    |-- css
+ |    |    |-- img
+ |    |    |-- js
+ |    |    |-- footer.html
+ |    |    |-- header.html
+ |    +-- theme2
+ |         |-- ...
+ |-- v2
+ |    |-- theme1
+ |    |    |-- ...
+ |    +-- theme2
+ |         |-- ...
+ +-- latest  <--- symbolic link pointing to /public/assets/v2
+
+```
+Note a *latest* symbolic folder is provided pointing to latest version (v2) to support auto-upgrade.
+
+### Templating
+*Unippear* uses [EJS](https://github.com/tj/ejs) template engine. EJS view folder is set to */public*. Any file in */public* can be converted to EJS template by appending file extension *.ejs* to the file name. An EJS template performs context substitution. In particular, *Unippear* supplies two context variables: 
+
+1. `unippearHost` set to  *&lt;protocol&gt;:// &lt;host_name&gt;:&lt;port&gt;* of *Unippear* service web app to allow emitting fully qualified URL. 
+2. `thisFileUrlPath` set to the URL path portion (excluding file name) of the template to allow emitting relative URL. This variable is useful to support versioning and theming.
+
+The URL of an asset rendered by EJS template should not include the *.ejs* extension.
+
+As an example, suppose we imported a CSS asset from an existing website to file */public/assets/v1/theme1/css/header.css*, which maps to URL *//&lt;my-unippearHost&gt;/v1/theme1/css/header.css*. The file contains
 ```
 #logo {
 	background: url(/img/logo.png) no-repeat;
 }
 ```
-When this CSS is served to a client website, */img/logo.png* will be relative to the host  of client website, not *Unippear*. To let *Unippear* take control of the logo file, first copy the logo to */public/assets/img/logo.png*, then rename file *header.css* to *header.css.ext*, lastly change CSS to generate fully qualified logo URL:
+When this CSS is served to a client website, */img/logo.png* will be relative to the host  of client website, not *Unippear*. To let *Unippear* take control of the logo file, first copy the logo to */public/assets/v1/theme1/img/logo.png*, then rename file *header.css* to *header.css.ext*, lastly change CSS to generate fully qualified logo URL:
 ```
 #logo {
-	background: url(<%=unippearHost%>/img/logo.png) no-repeat;
+	background: url(<%=unippearHost%><%=thisFileUrlPath%>/img/logo.png) no-repeat;
 }
 ```
-The URL of *header.css* remains to be *//&lt;my-unippearHost&gt;/css/header.css*.
+The URL of *header.css* remains to be *//&lt;my-unippearHost&gt;/v1/theme1/css/header.css*.
 
 ### Access Control
 Without access control, an external site can easily spoof yours. *Unippear* prevents unauthorized access by validating the incoming request against a whitelist in file */client-whitelist.json*. If *Referer* and/or *Origin* (used by CORS) request headers are supplied, they must match at least one RegEx patterns of the whitelist.
@@ -83,7 +114,7 @@ After you have checked out live demo, familiar with directory structure, loader,
 ### Serving
 *Unippear* layout is served by adding following Javascript to an authorized client website page:
 ```
-<script type="text/javascript" src="//<your-unippearHost>/index.js"></script>
+<script type="text/javascript" src="//<your-unippearHost>/<version>/<theme>/index.js"></script>
 <script type="text/javascript">
     unippear();
 </script>
