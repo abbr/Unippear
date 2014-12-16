@@ -29,7 +29,8 @@ app.use(cookieParser());
 //CORS and Referer validation
 var validClients = [".*"];
 try {
-    validClients = JSON.parse(fs.readFileSync(path.join(__dirname, 'client-whitelist.json')).toString()).validClients;
+    var stripJsonComments = require('strip-json-comments');
+    validClients = JSON.parse(stripJsonComments(fs.readFileSync(path.join(__dirname, 'client-whitelist.json')).toString()));
 }
 catch (err) {}
 validClients = validClients.map(function(v) {

@@ -1,6 +1,8 @@
-{
-    "_comment": "validClients is an array of escaped URL RegExp strings, for example [\"^https?://.*\\.?mycorp\\.com\"]",
-    "_comment": "^null allows file based localhost client for debugging purpose",
-    "_comment": "To allow any client, use .*",
-    "validClients": [".*", "^https?://.*\\.?github\\.com", "^null"]
-}
+    /*
+     * validClients is an array of double escaped URL RegExp strings, 
+     * for example [".*", "^https?://.*\\.?github\\.com", "^null"].
+     * ^null allows file based localhost client for debugging purpose.
+     * .* allows any hosts. Remove it prior to go live.
+     */
+[".*", "^https?://.*\\.?github\\.com", "^null"]
+
