@@ -55,7 +55,7 @@ To improve performance, all JS files are combined into one download by default. 
 The order of loading and parsing the assets is important. A good strategy needs to take performance and Javascript event processing model into account. CSS and JS files should be named in their desired parsing order by, for example, prefixing file names with 0-left-padded digits such as 01_file1.js, 02_file2.js etc. CSS files are loaded in parallel. To ensure event handler is defined before event is triggered, the loader postpones loading header and footer only after all JS files have been loaded and evaluated. If JS files are not combined, then each JS file is loaded and evaluated in serial. Either combined JS or the first individual JS file is loaded in parallel with CSS files. Header and footer are also loaded in parallel.
 
 ### Versioning and Theming (Optional)
-Versioning and theming provide ways to partition and group assets under */public/assets*. *Unippear* doesn't recognize the concepts of versioning and theming other than interpreting them as sub-folders. For example, in an implementation where multiple themes are provided under a version, the folder structure could look like:
+Versioning and theming provide ways to partition and group assets under */public/assets*. However, *Unippear* doesn't recognize those concepts. Instead, it only recognizes folders. Versioning and theming are merely  the interpretations we gave to folders under *assets*. For example, in an implementation where multiple themes are provided under a version, the folder structure may look like:
 
 ```
 /public/assets
@@ -76,7 +76,7 @@ Versioning and theming provide ways to partition and group assets under */public
  +-- latest  <--- symbolic link pointing to /public/assets/v2
 
 ```
-Note a *latest* symbolic folder can be provided manually pointing to latest version (v2 in this case) to support auto-upgrade.
+Note a *latest* symbolic folder can be manually provided  pointing to latest version (v2 in this case) to support auto-upgrade.
 
 ### Templating
 *Unippear* uses [EJS](https://github.com/tj/ejs) template engine. EJS view folder is set to */public*. Any file in */public* can be converted to EJS template by appending file extension *.ejs* to the file name. An EJS template performs context substitution. In particular, *Unippear* supplies two context variables: 
@@ -121,7 +121,7 @@ After you have checked out live demo and familiarized with the topics described 
     unippear();
 </script>
 ```
-You need to advertise *&lt;your-unippearHost&gt;*, *&lt;version&gt;* and *&lt;theme&gt;* to intended clients.
+You need to convey *&lt;your-unippearHost&gt;*, *&lt;version&gt;* and *&lt;theme&gt;* to intended clients.
 
 ### Customization
 The call to `unippear()` can take an option parameter. Out of the box *Unippear* only supports two options - *headerContainer* and *footerContainer* to specify which DOM element should header and footer be inserted into respectively. When omitted, header and footer are inserted into *&lt;body&gt;*. If, for instance, a client site HTML page has following DOM:
