@@ -78,6 +78,8 @@ Versioning and theming provide ways to partition and group assets under */public
 ```
 Note a *latest* symbolic folder can be manually provided  pointing to latest version (v2 in this case) to support auto-upgrade.
 
+The version and theme a client website uses is determined by URL path of the loader in client HTML document, as shown in [Serving](#serving) below.
+
 ### Templating
 *Unippear* uses [EJS](https://github.com/tj/ejs) template engine. EJS view folder is set to */public*. Any file in */public* can be converted to EJS template by appending file extension *.ejs* to the file name. An EJS template performs context substitution. In particular, *Unippear* supplies two context variables: 
 
@@ -121,7 +123,7 @@ After you have checked out live demo and familiarized with the topics described 
     unippear();
 </script>
 ```
-You need to convey *&lt;your-unippearHost&gt;*, *&lt;version&gt;* and *&lt;theme&gt;* to intended clients.
+You need to convey *&lt;your-unippearHost&gt;*, allowable *&lt;version&gt;* and *&lt;theme&gt;*, if applicable, to intended clients.
 
 ### Customization
 The call to `unippear()` can take an option parameter. Out of the box *Unippear* only supports two options - *headerContainer* and *footerContainer* to specify which DOM element should header and footer be inserted into respectively. When omitted, header and footer are inserted into *&lt;body&gt;*. If, for instance, a client site HTML page has following DOM:
