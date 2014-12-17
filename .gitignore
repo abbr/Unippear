@@ -3,3 +3,4 @@ public/static/components
 .sass-cache
 .c9
 public-test/
+npm-debug.log
