@@ -5,6 +5,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var fs = require('fs');
+var stripJsonComments = require('strip-json-comments');
 
 var routes = require('./routes/index');
 routes.publicFolderNm = 'public';
@@ -27,14 +28,21 @@ app.use(bodyParser.urlencoded({
 app.use(cookieParser());
 
 //CORS and Referer validation
-var validClients = [".*"];
-try {
-    var stripJsonComments = require('strip-json-comments');
-    validClients = JSON.parse(stripJsonComments(fs.readFileSync(path.join(__dirname, 'client-whitelist.json')).toString()));
-}
-catch (err) {}
-validClients = validClients.map(function(v) {
-    return new RegExp(v);
+var clientWhiteList = path.join(__dirname, 'client-whitelist.json');
+var validClients = [/.*/];
+var parseWhiteList = function() {
+    try {
+        validClients = JSON.parse(stripJsonComments(fs.readFileSync(clientWhiteList).toString())).map(function(v) {
+            return new RegExp(v);
+        });
+    }
+    catch (err) {}
+};
+parseWhiteList();
+fs.watchFile(clientWhiteList, function(curr, prev) {
+    if (curr.mtime.getTime() > prev.mtime.getTime()) {
+        parseWhiteList();
+    }
 });
 
 app.use(function(req, res, next) {

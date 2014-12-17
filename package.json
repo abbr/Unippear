@@ -1,6 +1,6 @@
 {
   "name": "unippear",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "license": "MIT",
   "author": {
     "name": "Fred"
@@ -13,6 +13,7 @@
   "description": "Offering site layout as a service.",
   "keywords": [
     "website layout service",
+    "layout manager",
     "soa"
   ],
   "scripts": {

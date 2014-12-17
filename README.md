@@ -110,7 +110,7 @@ After you have checked out live demo and familiarized with the topics described 
 
 1. [installing](#installation) *Unippear*
 2. replacing files in */public/assets* with your own assets. Devise a versioning and/or theming directory structure as you see fit.
-3. updating /client-whitelist.json with a list of authorized client URL patterns. Restart Node every time for updates to take effect.
+3. updating /client-whitelist.json with a list of authorized client URL patterns. Updates made at runtime take effect immediately without restarting Node.
 4. launching *Unippear* by running `bin/www`. By default, the process listens on port 3000. To change port, either modify */bin/www* or set env PORT before launching node. Running *Node* as a service or setting up a front-end reverse proxy are beyond the scope of this document. It's easy to google a solution.
 
 ### Serving
