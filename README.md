@@ -55,7 +55,7 @@ To improve performance, all JS files are combined into one download by default. 
 The order of loading and parsing the assets is important. A good strategy needs to take performance and Javascript event processing model into account. CSS and JS files should be named in their desired parsing order by, for example, prefixing file names with 0-left-padded digits such as 01_file1.js, 02_file2.js etc. CSS files are loaded in parallel. To ensure event handler is defined before event is triggered, the loader postpones loading header and footer only after all JS files have been loaded and evaluated. If JS files are not combined, then each JS file is loaded and evaluated in serial. Either combined JS or the first individual JS file is loaded in parallel with CSS files. Header and footer are also loaded in parallel.
 
 ### Versioning and Theming (Optional)
-Versioning and theming provide ways to partition and group assets under */public/assets*. However, *Unippear* doesn't recognize those concepts. Instead, it only recognizes folders. Versioning and theming are merely  the interpretations we gave to folders under *assets*. For example, in an implementation where multiple themes are provided under a version, the folder structure may look like:
+Versioning and theming provide ways to partition and group assets under */public/assets*. However, *Unippear* doesn't recognize those concepts. Instead, it only recognizes folders. Versioning and theming are nothing but interpretations we gave to folder levels under *assets*. For example, in an implementation where multiple themes are provided under a version, the folder structure may look like:
 
 ```
 /public/assets
@@ -95,12 +95,12 @@ As an example, suppose we imported a CSS asset from an existing website to file 
 When this CSS is served to a client website, */img/logo.png* will be relative to the host  of client website, not *Unippear*. To let *Unippear* take control of the logo file, first copy the logo to */public/assets/v1/theme1/img/logo.png*, then rename file *header.css* to *header.css.ext*, lastly change CSS to generate fully qualified logo URL:
 ```
 #logo {
-	background: url(<%=unippearHost%><%=thisFileUrlPath%>/img/logo.png) no-repeat;
+	background: url(<%=unippearHost%><%=thisFileUrlPath%>/../img/logo.png) no-repeat;
 }
 ```
 The URL of *header.css* remains to be *//&lt;my-unippearHost&gt;/v1/theme1/css/header.css*.
 
-Later on a new version, say *v2*, can be created by duplicating folder *v1* without changing the css because context variable *thisFileUrlPath* will be pointing to */public/assets/v2/...*.
+*thisFileUrlPath* is set to */v1/theme1/css* in this context. Later on a new version, say *v2*, can be created by duplicating folder *v1* without changing the css because *thisFileUrlPath* will be */v2/theme1/css* in that context.
 
 ### Access Control
 Without access control, your branding can be easily spoofed. *Unippear* prevents unauthorized access by validating the incoming request against a whitelist in file */client-whitelist.json*. If *Referer* and/or *Origin* (used by CORS) request headers are supplied, they must match at least one RegEx patterns of the whitelist.
@@ -109,7 +109,7 @@ Without access control, your branding can be easily spoofed. *Unippear* prevents
 After you have checked out live demo and familiarized with the topics described above, you can build your site layout service by:
 
 1. [installing](#installation) *Unippear*
-2. replacing files in */public/assets* with your own assets. Devise a versioning and/or theming strategy as you see fit.
+2. replacing files in */public/assets* with your own assets. Devise a versioning and/or theming directory structure as you see fit.
 3. updating /client-whitelist.json with a list of authorized client URL patterns. Restart Node every time for updates to take effect.
 4. launching *Unippear* by running `bin/www`. By default, the process listens on port 3000. To change port, either modify */bin/www* or set env PORT before launching node. Running *Node* as a service or setting up a front-end reverse proxy are beyond the scope of this document. It's easy to google a solution.
 
