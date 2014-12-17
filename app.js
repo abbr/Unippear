@@ -42,7 +42,7 @@ app.use(function(req, res, next) {
     if (req.headers.referer) {
         if (!validClients.some(function(v) {
                 return v.test(req.headers.referer);
-            }) && req.headers.referer.indexOf(req.protocol + "://" + req.host) !== 0) {
+            }) && req.headers.referer.indexOf(req.protocol + "://" + req.hostname) !== 0) {
             return res.status(403).end();
         }
     }
@@ -50,7 +50,7 @@ app.use(function(req, res, next) {
     if (req.headers.origin) {
         if (validClients.some(function(v) {
                 return v.test(req.headers.origin);
-            }) || req.headers.origin.indexOf(req.protocol + "://" + req.host) === 0) {
+            }) || req.headers.origin.indexOf(req.protocol + "://" + req.hostname) === 0) {
             res.header('Access-Control-Allow-Origin', req.headers.origin);
             if (req.headers['access-control-request-method']) {
                 res.header('Access-Control-Allow-Methods', req.headers['access-control-request-method']);
@@ -73,7 +73,7 @@ app.use(function(req, res, next) {
 });
 
 app.use(express.static(path.join(__dirname, routes.publicFolderNm, 'assets'), {
-    'index': 'index.js'
+    'index': false
 }));
 
 app.use('/', routes);

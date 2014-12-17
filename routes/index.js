@@ -27,7 +27,7 @@ router.get('*/combined.js', function(req, res) {
                 output = output.toString();
                 if (path.extname(files[idx]) === '.ejs') {
                     output = ejs.render(output, {
-                        "unippearHost": req.protocol + "://" + req.host,
+                        "unippearHost": req.protocol + "://" + req.hostname,
                         "thisFileUrlPath": path.dirname(files[idx]).substring(path.join(__dirname, '../', router.publicFolderNm, 'assets').length)
                     });
                 }
@@ -52,11 +52,11 @@ router.get(/^(.*)\/(index\.js)?$/, function(req, res) {
     var cssPath = path.join(__dirname, '../', router.publicFolderNm, '/assets', thisFileUrlPath, '/css');
     recursive(cssPath, function(err, files) {
         var cssFiles = (files || []).map(function(v) {
-            return req.protocol + "://" + req.host + thisFileUrlPath + v.substring(cssPath.length - 4).replace(/\.ejs$/, '');
+            return req.protocol + "://" + req.hostname + thisFileUrlPath + v.substring(cssPath.length - 4).replace(/\.ejs$/, '');
         });
         if (router.combineJs) {
             res.render('api/index', {
-                "unippearHost": req.protocol + "://" + req.host,
+                "unippearHost": req.protocol + "://" + req.hostname,
                 "thisFileUrlPath": thisFileUrlPath,
                 "cssFiles": cssFiles
             });
@@ -68,7 +68,7 @@ router.get(/^(.*)\/(index\.js)?$/, function(req, res) {
                 return v.substring(jsPath.length).replace(/\.ejs$/, '');
             });
             res.render('api/index', {
-                "unippearHost": req.protocol + "://" + req.host,
+                "unippearHost": req.protocol + "://" + req.hostname,
                 "thisFileUrlPath": thisFileUrlPath,
                 "jsFiles": jsFiles,
                 "cssFiles": cssFiles
@@ -86,7 +86,7 @@ router.get('*/*', function(req, res, next) {
         if (exists) {
             res.type(path.extname(req.path));
             res.render(path.join('assets', req.path + '.ejs'), {
-                unippearHost: req.protocol + "://" + req.host,
+                unippearHost: req.protocol + "://" + req.hostname,
                 "thisFileUrlPath": thisFileUrlPath
             });
         }
