@@ -14,7 +14,6 @@
     "website layout service",
     "soa"
   ],
-  "private": true,
   "scripts": {
     "start": "node ./bin/www"
   },
