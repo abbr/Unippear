@@ -8,7 +8,7 @@ var fs = require('fs');
 
 var routes = require('./routes/index');
 routes.publicFolderNm = 'public';
-routes.combineJs = false;
+routes.combineJs = true;
 var app = express();
 
 // view engine setup
@@ -72,7 +72,10 @@ app.use(function(req, res, next) {
     next();
 });
 
-app.use(express.static(path.join(__dirname, routes.publicFolderNm, 'assets')));
+app.use(express.static(path.join(__dirname, routes.publicFolderNm, 'assets'), {
+    'index': false,
+    'redirect': false
+}));
 
 app.use('/', routes);
 

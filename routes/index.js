@@ -7,41 +7,30 @@ var async = require('async');
 var ejs = require('ejs');
 var etag = require('etag');
 
-/* GET home page. */
-router.get('*/index.js', function(req, res) {
-    res.type('application/javascript');
-    var cssPath = path.join(__dirname, '../', router.publicFolderNm, '/assets', req.params[0], '/css');
-    recursive(cssPath, function(err, files) {
-        var cssFiles = (files || []).map(function(v) {
-            return req.protocol + "://" + req.host + req.params[0] + v.substring(cssPath.length - 4).replace(/\.ejs$/, '');
-        });
-        if (router.combineJs) {
-            res.render('api/index', {
-                "unippearHost": req.protocol + "://" + req.host,
-                "thisFileUrlPath": req.params[0],
-                "cssFiles": cssFiles
+// Get all ejs assets
+router.get('*/*', function(req, res, next) {
+    var thisFileUrlPath = req.params[0].replace(/\/$/, '');
+
+    require('fs').exists(path.join(__dirname, '..', router.publicFolderNm, 'assets', req.path + '.ejs'), function(exists) {
+        if (exists) {
+            res.type(path.extname(req.path));
+            res.render(path.join('assets', req.path + '.ejs'), {
+                unippearHost: req.protocol + "://" + req.host,
+                "thisFileUrlPath": thisFileUrlPath
             });
-            return;
         }
-        var jsPath = path.join(__dirname, '../', router.publicFolderNm, '/assets', req.params[0], '/js/');
-        recursive(jsPath, function(err, files) {
-            var jsFiles = (files || []).map(function(v) {
-                return v.substring(jsPath.length).replace(/\.ejs$/, '');
-            });
-            res.render('api/index', {
-                "unippearHost": req.protocol + "://" + req.host,
-                "thisFileUrlPath": req.params[0],
-                "jsFiles": jsFiles,
-                "cssFiles": cssFiles
-            });
-        });
+        else {
+            next();
+        }
     });
 });
 
+
 // Get combined.js
 router.get('*/combined.js', function(req, res) {
+    var thisFileUrlPath = req.params[0].replace(/\/$/, '');
     res.type('application/javascript');
-    var jsPath = path.join(__dirname, '../', router.publicFolderNm, 'assets', req.params[0], '/js');
+    var jsPath = path.join(__dirname, '../', router.publicFolderNm, 'assets', thisFileUrlPath, '/js');
     recursive(path.resolve(jsPath), function(err, files) {
         if (!files) {
             return res.status(404).end();
@@ -74,21 +63,37 @@ router.get('*/combined.js', function(req, res) {
     });
 });
 
-// Get all ejs assets
-router.get('*/*', function(req, res, next) {
-    require('fs').exists(path.join(__dirname, '..', router.publicFolderNm, 'assets', req.path + '.ejs'), function(exists) {
-        if (exists) {
-            res.type(path.extname(req.path));
-            res.render(path.join('assets', req.path + '.ejs'), {
-                unippearHost: req.protocol + "://" + req.host,
-                "thisFileUrlPath": req.params[0]
+
+/* GET home page. */
+router.get(/^(.*)(\/index.js)?/, function(req, res) {
+    var thisFileUrlPath = req.params[0].replace(/\/$/, '');
+    res.type('application/javascript');
+    var cssPath = path.join(__dirname, '../', router.publicFolderNm, '/assets', thisFileUrlPath, '/css');
+    recursive(cssPath, function(err, files) {
+        var cssFiles = (files || []).map(function(v) {
+            return req.protocol + "://" + req.host + thisFileUrlPath + v.substring(cssPath.length - 4).replace(/\.ejs$/, '');
+        });
+        if (router.combineJs) {
+            res.render('api/index', {
+                "unippearHost": req.protocol + "://" + req.host,
+                "thisFileUrlPath": thisFileUrlPath,
+                "cssFiles": cssFiles
             });
+            return;
         }
-        else {
-            next();
-        }
+        var jsPath = path.join(__dirname, '../', router.publicFolderNm, '/assets', thisFileUrlPath, '/js/');
+        recursive(jsPath, function(err, files) {
+            var jsFiles = (files || []).map(function(v) {
+                return v.substring(jsPath.length).replace(/\.ejs$/, '');
+            });
+            res.render('api/index', {
+                "unippearHost": req.protocol + "://" + req.host,
+                "thisFileUrlPath": thisFileUrlPath,
+                "jsFiles": jsFiles,
+                "cssFiles": cssFiles
+            });
+        });
     });
 });
-
 
 module.exports = router;

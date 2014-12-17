@@ -114,7 +114,7 @@ After you have checked out live demo and familiarized with the topics described 
 ### Serving
 *Unippear* layout is served by adding following Javascript to an authorized client website page:
 ```
-<script type="text/javascript" src="//<your-unippearHost>/<version>/<theme>/index.js"></script>
+<script type="text/javascript" src="//<your-unippearHost>/<version>/<theme>"></script>
 <script type="text/javascript">
     unippear();
 </script>
