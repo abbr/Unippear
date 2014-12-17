@@ -73,8 +73,7 @@ app.use(function(req, res, next) {
 });
 
 app.use(express.static(path.join(__dirname, routes.publicFolderNm, 'assets'), {
-    'index': false,
-    'redirect': false
+    'index': 'index.js'
 }));
 
 app.use('/', routes);

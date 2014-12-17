@@ -7,25 +7,6 @@ var async = require('async');
 var ejs = require('ejs');
 var etag = require('etag');
 
-// Get all ejs assets
-router.get('*/*', function(req, res, next) {
-    var thisFileUrlPath = req.params[0].replace(/\/$/, '');
-
-    require('fs').exists(path.join(__dirname, '..', router.publicFolderNm, 'assets', req.path + '.ejs'), function(exists) {
-        if (exists) {
-            res.type(path.extname(req.path));
-            res.render(path.join('assets', req.path + '.ejs'), {
-                unippearHost: req.protocol + "://" + req.host,
-                "thisFileUrlPath": thisFileUrlPath
-            });
-        }
-        else {
-            next();
-        }
-    });
-});
-
-
 // Get combined.js
 router.get('*/combined.js', function(req, res) {
     var thisFileUrlPath = req.params[0].replace(/\/$/, '');
@@ -65,7 +46,7 @@ router.get('*/combined.js', function(req, res) {
 
 
 /* GET home page. */
-router.get(/^(.*)(\/index.js)?/, function(req, res) {
+router.get(/^(.*)\/(index\.js)?$/, function(req, res) {
     var thisFileUrlPath = req.params[0].replace(/\/$/, '');
     res.type('application/javascript');
     var cssPath = path.join(__dirname, '../', router.publicFolderNm, '/assets', thisFileUrlPath, '/css');
@@ -93,6 +74,25 @@ router.get(/^(.*)(\/index.js)?/, function(req, res) {
                 "cssFiles": cssFiles
             });
         });
+    });
+});
+
+
+// Get all ejs assets
+router.get('*/*', function(req, res, next) {
+    var thisFileUrlPath = req.params[0].replace(/\/$/, '');
+
+    require('fs').exists(path.join(__dirname, '..', router.publicFolderNm, 'assets', req.path + '.ejs'), function(exists) {
+        if (exists) {
+            res.type(path.extname(req.path));
+            res.render(path.join('assets', req.path + '.ejs'), {
+                unippearHost: req.protocol + "://" + req.host,
+                "thisFileUrlPath": thisFileUrlPath
+            });
+        }
+        else {
+            next();
+        }
     });
 });
 
