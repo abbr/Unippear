@@ -34,6 +34,7 @@ router.get('*/combined.js', function(req, res) {
                 cnt += output + '\n';
             });
             res.setHeader('ETag', etag(cnt));
+            res.setHeader('Expires', '-1');
             if (req.fresh) {
                 res.status(304).end();
             }
