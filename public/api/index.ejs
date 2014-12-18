@@ -16,62 +16,45 @@ function unippear(opts) {
     $jQ.ajaxSetup({
       cache: true
     });
+    // download header and footer
+    var headerProm = $jQ.get(opts.headerHtmlFragment);
+    var footerProm = $jQ.get(opts.footerHtmlFragment);
     // download js
-    <%
-    if (locals.jsFiles) {
-      jsFiles.forEach(function(f) { %>
-        $jQ.getScript("<%=unippearHost%><%=thisFileUrlPath%>/js/<%=f%>").done(function() { <%
-        }); %>
-        // download header and footer after js are loaded
-        $jQ.get(opts.headerHtmlFragment, function(data) {
-          try {
-            $jQ(unippear.headerContainer).first().prepend(data);
+    $jQ.when( <%
+      jsFiles.forEach(function(f, idx) { %>
+        $jQ.ajax({
+            "url": "<%=unippearHost%><%=thisFileUrlPath%>/<%=f%>",
+            "dataType": "text"
+          }) <%
+          if (idx < (jsFiles.length - 1)) { %> , <%
           }
-          catch (err) {}
-          try {
-            // don't used embedded $jQ, use the "default" one instead. Otherwise
-            // the handlers won't be called.
-            $(document).trigger('headerLoaded');
-          }
-          catch (err) {}
-        });
-        $jQ.get(opts.footerHtmlFragment, function(data) {
-          try {
-            $jQ(unippear.footerContainer).first().append(data);
-          }
-          catch (err) {}
-          try {
-            $(document).trigger('footerLoaded');
-          }
-          catch (err) {}
-        }); <% jsFiles.forEach(function(f) { %>
-        }); <%
+      }); %>
+    ).done(function() {
+      for (var i = 0; i < <%= jsFiles.length %> ; i++) {
+        $jQ.globalEval((arguments[i] instanceof Array) ? arguments[i][0] : arguments[i]);
+      }
+      $jQ.when(headerProm).done(function(data) {
+        try {
+          $jQ(unippear.headerContainer).first().prepend(data);
+        }
+        catch (err) {}
+        try {
+          // don't used embedded $jQ, use the "default" one instead. Otherwise
+          // the handlers won't be called.
+          $(document).trigger('headerLoaded');
+        }
+        catch (err) {}
       });
-    }
-    else { %>
-      $jQ.getScript("<%=unippearHost%><%=thisFileUrlPath%>/combined.js").done(function() {
-        // download header and footer after js are loaded
-        $jQ.get(opts.headerHtmlFragment, function(data) {
-          try {
-            $jQ(unippear.headerContainer).first().prepend(data);
-          }
-          catch (err) {}
-          try {
-            $(document).trigger('headerLoaded');
-          }
-          catch (err) {}
-        });
-        $jQ.get(opts.footerHtmlFragment, function(data) {
-          try {
-            $jQ(unippear.footerContainer).first().append(data);
-          }
-          catch (err) {}
-          try {
-            $(document).trigger('footerLoaded');
-          }
-          catch (err) {}
-        });
-      }); <%
-    } %>
+      $jQ.when(footerProm).done(function(data) {
+        try {
+          $jQ(unippear.footerContainer).first().append(data);
+        }
+        catch (err) {}
+        try {
+          $(document).trigger('footerLoaded');
+        }
+        catch (err) {}
+      });
+    });
   });
 };

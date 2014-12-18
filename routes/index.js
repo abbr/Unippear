@@ -34,7 +34,7 @@ router.get('*/combined.js', function(req, res) {
                 cnt += output + '\n';
             });
             res.setHeader('ETag', etag(cnt));
-            res.setHeader('Expires', '-1');
+            res.setHeader('Cache-Control', 'max-age=0');
             if (req.fresh) {
                 res.status(304).end();
             }
@@ -59,14 +59,15 @@ router.get(/^(.*)\/(index\.js)?$/, function(req, res) {
             res.render('api/index', {
                 "unippearHost": req.protocol + "://" + req.hostname,
                 "thisFileUrlPath": thisFileUrlPath,
-                "cssFiles": cssFiles
+                "cssFiles": cssFiles,
+                "jsFiles": ['combined.js']
             });
             return;
         }
         var jsPath = path.join(__dirname, '../', router.publicFolderNm, '/assets', thisFileUrlPath, '/js/');
         recursive(jsPath, function(err, files) {
             var jsFiles = (files || []).map(function(v) {
-                return v.substring(jsPath.length).replace(/\.ejs$/, '');
+                return 'js/' + v.substring(jsPath.length).replace(/\.ejs$/, '');
             });
             res.render('api/index', {
                 "unippearHost": req.protocol + "://" + req.hostname,
@@ -86,6 +87,7 @@ router.get('*/*', function(req, res, next) {
     require('fs').exists(path.join(__dirname, '..', router.publicFolderNm, 'assets', req.path + '.ejs'), function(exists) {
         if (exists) {
             res.type(path.extname(req.path));
+            res.setHeader('Cache-Control', 'max-age=0');
             res.render(path.join('assets', req.path + '.ejs'), {
                 unippearHost: req.protocol + "://" + req.hostname,
                 "thisFileUrlPath": thisFileUrlPath
