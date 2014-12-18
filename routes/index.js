@@ -11,10 +11,8 @@ var fileCompare = function(v1, v2) {
     if (typeof v1 !== 'string' || typeof v2 !== 'string') throw "invalid argument";
     var leveDiff = v1.split(path.sep).length - v2.split(path.sep).length;
     switch (true) {
-        case (leveDiff > 0):
-            return -1;
-        case (leveDiff < 0):
-            return 1;
+        case (leveDiff !== 0):
+            return leveDiff;
         default:
             return v1.localeCompare(v2);
     }
@@ -30,6 +28,7 @@ router.get('*/combined.js', function(req, res) {
         if (!files) {
             return res.status(404).end();
         }
+        files.sort(fileCompare);
         async.map(files, fs.readFile, function(err, outputs) {
             if (err) {
                 console.error(err);
