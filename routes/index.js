@@ -6,6 +6,20 @@ var path = require('path');
 var async = require('async');
 var ejs = require('ejs');
 var etag = require('etag');
+var deasync = require('deasync');
+var fileCompare = function(v1, v2) {
+    if (typeof v1 !== 'string' || typeof v2 !== 'string') throw "invalid argument";
+    var leveDiff = v1.split(path.sep).length - v2.split(path.sep).length;
+    switch (true) {
+        case (leveDiff > 0):
+            return -1;
+        case (leveDiff < 0):
+            return 1;
+        default:
+            return v1.localeCompare(v2);
+    }
+};
+
 
 // Get combined.js
 router.get('*/combined.js', function(req, res) {
@@ -55,26 +69,34 @@ router.get(/^(.*)\/(index\.js)?$/, function(req, res) {
         var cssFiles = (files || []).map(function(v) {
             return req.protocol + "://" + req.hostname + thisFileUrlPath + v.substring(cssPath.length - 4).replace(/\.ejs$/, '');
         });
-        if (router.combineJs) {
-            res.render('api/index', {
-                "unippearHost": req.protocol + "://" + req.hostname,
-                "thisFileUrlPath": thisFileUrlPath,
-                "cssFiles": cssFiles,
-                "jsFiles": ['combined.js']
-            });
-            return;
+
+        cssFiles.sort(fileCompare);
+        var jsFiles = ['combined.js'];
+        if (!router.combineJs) {
+            var jsPath = path.join(__dirname, '../', router.publicFolderNm, '/assets', thisFileUrlPath, '/js/');
+            var drecursive = deasync(recursive);
+            try {
+                jsFiles = (drecursive(jsPath) || []).map(function(v) {
+                    return 'js/' + v.substring(jsPath.length).replace(/\.ejs$/, '');
+                });
+                jsFiles.sort(fileCompare);
+            }
+            catch (err) {}
         }
-        var jsPath = path.join(__dirname, '../', router.publicFolderNm, '/assets', thisFileUrlPath, '/js/');
-        recursive(jsPath, function(err, files) {
-            var jsFiles = (files || []).map(function(v) {
-                return 'js/' + v.substring(jsPath.length).replace(/\.ejs$/, '');
-            });
-            res.render('api/index', {
-                "unippearHost": req.protocol + "://" + req.hostname,
-                "thisFileUrlPath": thisFileUrlPath,
-                "jsFiles": jsFiles,
-                "cssFiles": cssFiles
-            });
+        res.render('api/index', {
+            "unippearHost": req.protocol + "://" + req.hostname,
+            "thisFileUrlPath": thisFileUrlPath,
+            "cssFiles": cssFiles,
+            "jsFiles": jsFiles
+        }, function(err, cnt) {
+            res.setHeader('ETag', etag(cnt));
+            res.setHeader('Cache-Control', 'max-age=0');
+            if (req.fresh) {
+                res.status(304).end();
+            }
+            else {
+                res.end(cnt);
+            }
         });
     });
 });
