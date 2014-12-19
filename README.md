@@ -31,11 +31,11 @@ Take a look at [live demo](https://unippear.herokuapp.com/test.html) hosted on H
 │    │    ├── index.ejs     	<--- loader
 │    │    ├── jquery.ejs    	<--- jQuery used by loader only
 │    ├── assets/             	<--- assets folder
-│         ├── <version/theme>/  <--- optional version/theme levels
-│              ├── css/         <--- css folder
-│              ├── js/          <--- js folder
-│              ├── footer.html  <--- footer HTML fragment
-│              ├── header.html  <--- header HTML fragment
+│         ├── <version/theme>/	<--- optional version/theme levels
+│              ├── css/        	<--- css folder
+│              ├── js/         	<--- js folder
+│              ├── footer.html 	<--- footer HTML fragment
+│              ├── header.html 	<--- header HTML fragment
 ├── routes/                                
 │    └── index.js           	<--- Express routers
 ├── app.js                  	<--- Express app config
