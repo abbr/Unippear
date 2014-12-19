@@ -46,7 +46,7 @@ Take a look at [live demo](https://unippear.herokuapp.com/test.html) hosted on H
 *Unippear*'s core component is a loader that controls what assets (HTML, CSS, JS, IMG etc) get injected asynchronously to the client document and the order of downloading and parsing. All assets should be stored in */public/assets*. The loader loads following assets by performing respective operations:
 
 1. All *assets/&lt;version/theme&gt;/css* files sorted alphabetically, nested folders are allowed and sorted after file peers. A CSS file is loaded by appending a stylesheet *&lt;link&gt;* HTML element to the document *&lt;head&gt;*.
-2. All *assets/&lt;version/theme&gt;/js* files  sorted alphabetically, nested folders are allowed and sorted after file peers. A JS file is downloaded by calling [jQuery.ajax](http://api.jquery.com/jquery.ajax/). Caching is set to true prior to calling the method. A JS file is evaluated by calling [jQuery.globalEval()](http://api.jquery.com/jquery.globaleval/#jQuery-globalEval-code).
+2. All *assets/&lt;version/theme&gt;/js* files  sorted alphabetically, nested folders are allowed and sorted after file peers. A JS file is downloaded by calling [jQuery.ajax()](http://api.jquery.com/jquery.ajax/). Caching is set to true prior to calling the method. A JS file is evaluated by calling [jQuery.globalEval()](http://api.jquery.com/jquery.globaleval/#jQuery-globalEval-code).
 3. *assets/&lt;version/theme&gt;/header.html* containing header HTML fragment loaded by calling [jQuery.get()](http://api.jquery.com/jquery.get/). By default header is prepended to document *&lt;body&gt;*. The container element can be changed by setting *headerContainer* option when client site invoking the loader. See [Customization](#customization) for details.
 4. *assets/&lt;version/theme&gt;/footer.html*  containing footer HTML fragment loaded and inserted same way as *assets/&lt;version/theme&gt;/header.html* except that footer is appended to the container set by *footerContainer* option.
 
@@ -112,7 +112,7 @@ After you have checked out live demo and familiarized with the topics described 
 
 1. [installing](#installation) *Unippear*
 2. replacing files in */public/assets* with your own assets. Devise a versioning and/or theming directory structure as you see fit.
-3. updating /client-whitelist.json with a list of authorized client URL patterns. Updates made at runtime take effect immediately without restarting Node.
+3. updating /client-whitelist.json with a list of authorized client URL patterns. Updates made at runtime in the future take effect immediately without restarting Node.
 4. launching *Unippear* by running `bin/www`. By default, the process listens on port 3000. To change port, either modify */bin/www* or set env PORT before launching node. Running *Node* as a service or setting up a front-end reverse proxy are beyond the scope of this document. It's easy to google a solution.
 
 ### Serving
