@@ -29,7 +29,7 @@ Take a look at [live demo](https://unippear.herokuapp.com/test.html) hosted on H
 |-- public                  	<--- Express view folder
 |    |-- api                
 |    |    |-- index.ejs     	<--- loader
-|    |    |-- jquery.ejs    	<--- jquery to be imbeded into index.ejs used by loader only
+|    |    |-- jquery.ejs    	<--- jQuery used by loader only
 |    |-- assets             	<--- assets folder
 |         |-- <version>/<theme> <--- optional version/theme levels
 |              |-- css          <--- css folder
