@@ -24,23 +24,23 @@ Take a look at [live demo](https://unippear.herokuapp.com/test.html) hosted on H
 *Unippear* runs on [Express](http://expressjs.com). Important folders and files  *Unippear* consists of are:
 ```
 /                           	<--- app root
-|-- bin                                   
-|    +-- www                	<--- app startup script
-|-- public                  	<--- Express view folder
-|    |-- api                
-|    |    |-- index.ejs     	<--- loader
-|    |    |-- jquery.ejs    	<--- jQuery used by loader only
-|    |-- assets             	<--- assets folder
-|         |-- <version>/<theme> <--- optional version/theme levels
-|              |-- css          <--- css folder
-|              |-- js           <--- js folder
-|              |-- footer.html  <--- footer HTML fragment
-|              |-- header.html  <--- header HTML fragment
-|-- routes                                
-|    +-- index.js           	<--- Express routers
-|-- app.js                  	<--- Express app config
-|-- client-whitelist.json   	<--- a list of RegEx patterns of allowed clients
-|-- package.json            	<--- Node package descriptor
+├── bin/                                   
+│    └── www                	<--- app startup script
+├── public/                  	<--- Express view folder
+│    ├── api/                
+│    │    ├── index.ejs     	<--- loader
+│    │    ├── jquery.ejs    	<--- jQuery used by loader only
+│    ├── assets/             	<--- assets folder
+│         ├── <version/theme>/  <--- optional version/theme levels
+│              ├── css/         <--- css folder
+│              ├── js/          <--- js folder
+│              ├── footer.html  <--- footer HTML fragment
+│              ├── header.html  <--- header HTML fragment
+├── routes/                                
+│    └── index.js           	<--- Express routers
+├── app.js                  	<--- Express app config
+├── client-whitelist.json   	<--- a list of RegEx patterns of allowed clients
+├── package.json            	<--- Node package descriptor
 ```
 ### Loader
 *Unippear*'s core component is a loader that controls what assets (HTML, CSS, JS, IMG etc) get injected asynchronously to the client document and the order of downloading and parsing. All assets should be stored in */public/assets*. The loader loads following assets by performing respective operations:
@@ -58,22 +58,22 @@ The order of parsing assets is important. CSS and JS files should be named in th
 Versioning and theming provide ways to partition and group assets under */public/assets*. However, *Unippear* doesn't recognize those concepts. Instead, it only recognizes folders. Versioning and theming are nothing but interpretations we gave to folder levels under *assets*. For example, in an implementation where multiple themes are provided under a version, the folder structure may look like:
 
 ```
-/public/assets
- |-- v1
- |    |-- theme1
- |    |    |-- css
- |    |    |-- img
- |    |    |-- js
- |    |    |-- footer.html
- |    |    |-- header.html
- |    +-- theme2
- |         |-- ...
- |-- v2
- |    |-- theme1
- |    |    |-- ...
- |    +-- theme2
- |         |-- ...
- +-- latest  <--- symbolic link pointing to /public/assets/v2
+public/assets/
+ ├── v1/
+ │    ├── theme1/
+ │    │    ├── css/
+ │    │    ├── img/
+ │    │    ├── js/
+ │    │    ├── footer.html
+ │    │    ├── header.html
+ │    └── theme2/
+ │         ├── ...
+ ├── v2/
+ │    ├── theme1/
+ │    │    ├── ...
+ │    └── theme2/
+ │         ├── ...
+ └── latest/  <--- symbolic link pointing to public/assets/v2
 
 ```
 Note a *latest* symbolic folder can be manually provided  pointing to latest version (v2 in this case) to support auto-upgrade.
