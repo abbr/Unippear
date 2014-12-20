@@ -1,25 +1,25 @@
 function unippear(opts) {
-  unippear = opts || {};
-  unippear.headerContainer = unippear.headerContainer || 'body';
-  unippear.footerContainer = unippear.footerContainer || 'body';
-  unippear.headerHtmlFragment = '<%-unippearHost%><%=thisFileUrlPath%>/header.html';
-  unippear.footerHtmlFragment = '<%-unippearHost%><%=thisFileUrlPath%>/footer.html';
+  unippear = opts || {}
+  unippear.headerContainer = unippear.headerContainer || 'body'
+  unippear.footerContainer = unippear.footerContainer || 'body'
+  unippear.headerHtmlFragment = '<%-unippearHost%><%=thisFileUrlPath%>/header.html'
+  unippear.footerHtmlFragment = '<%-unippearHost%><%=thisFileUrlPath%>/footer.html'
 
   <% include jquery.js %>
-    $jQ = $.noConflict(true);
+    $jQ = $.noConflict(true)
   $jQ(function() {
     // download css
     <% cssFiles.forEach(function(f) { %>
-      $jQ('head').append('<link rel="stylesheet" href="<%=f%>"/>'); <%
-    }); %>
+        $jQ('head').append('<link rel="stylesheet" href="<%=f%>"/>') <%
+      }) %>
 
-    $jQ.ajaxSetup({
-      cache: true
-    });
-    // download header and footer
-    var headerProm = $jQ.get(opts.headerHtmlFragment);
-    var footerProm = $jQ.get(opts.footerHtmlFragment);
-    // download js
+      $jQ.ajaxSetup({
+        cache: true
+      })
+      // download header and footer
+    var headerProm = $jQ.get(opts.headerHtmlFragment)
+    var footerProm = $jQ.get(opts.footerHtmlFragment)
+      // download js
     $jQ.when( <%
       jsFiles.forEach(function(f, idx) { %>
         $jQ.ajax({
@@ -28,33 +28,35 @@ function unippear(opts) {
           }) <%
           if (idx < (jsFiles.length - 1)) { %> , <%
           }
-      }); %>
+      }) %>
     ).done(function() {
-      for (var i = 0; i < <%= jsFiles.length %> ; i++) {
-        $jQ.globalEval((arguments[i] instanceof Array) ? arguments[i][0] : arguments[i]);
+      var i = 0
+      while (i < <%= jsFiles.length %> ) {
+        $jQ.globalEval((arguments[i] instanceof Array) ? arguments[i][0] : arguments[i])
+        i++
       }
       $jQ.when(headerProm).done(function(data) {
         try {
-          $jQ(unippear.headerContainer).first().prepend(data);
+          $jQ(unippear.headerContainer).first().prepend(data)
         }
         catch (err) {}
         try {
           // don't used embedded $jQ, use the "default" one instead. Otherwise
           // the handlers won't be called.
-          $(document).trigger('headerLoaded');
+          $(document).trigger('headerLoaded')
         }
         catch (err) {}
-      });
+      })
       $jQ.when(footerProm).done(function(data) {
         try {
-          $jQ(unippear.footerContainer).first().append(data);
+          $jQ(unippear.footerContainer).first().append(data)
         }
         catch (err) {}
         try {
-          $(document).trigger('footerLoaded');
+          $(document).trigger('footerLoaded')
         }
         catch (err) {}
-      });
-    });
-  });
-};
+      })
+    })
+  })
+}
