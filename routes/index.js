@@ -48,7 +48,7 @@ router.get('*/combined.js', function(req, res) {
             })
             res.setHeader('ETag', etag(cnt))
             res.setHeader('Cache-Control', 'max-age=0')
-            if (req.fresh) {
+            if (req.get('if-none-match') === res.get('etag')) {
                 res.status(304).end()
             }
             else {
@@ -90,7 +90,7 @@ router.get(/^(.*)\/(index\.js)?$/, function(req, res) {
         }, function(err, cnt) {
             res.setHeader('ETag', etag(cnt))
             res.setHeader('Cache-Control', 'max-age=0')
-            if (req.fresh) {
+            if (req.get('if-none-match') === res.get('etag')) {
                 res.status(304).end()
             }
             else {
@@ -108,10 +108,18 @@ router.get('*/*', function(req, res, next) {
     require('fs').exists(path.join(__dirname, '..', router.publicFolderNm, 'assets', req.path + '.ejs'), function(exists) {
         if (exists) {
             res.type(path.extname(req.path))
-            res.setHeader('Cache-Control', 'max-age=0')
             res.render(path.join('assets', req.path + '.ejs'), {
                 unippearHost: req.protocol + "://" + req.hostname,
                 "thisFileUrlPath": thisFileUrlPath
+            }, function(err, cnt) {
+                res.setHeader('ETag', etag(cnt))
+                res.setHeader('Cache-Control', 'max-age=0')
+                if (req.get('if-none-match') === res.get('etag')) {
+                    res.status(304).end()
+                }
+                else {
+                    res.end(cnt)
+                }
             })
         }
         else {
