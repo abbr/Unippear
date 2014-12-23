@@ -11,6 +11,16 @@ var routes = require('./routes/index')
 routes.publicFolderNm = 'public'
 routes.combineJs = true
 var app = express()
+// uncomment follow block to minify JS and CSS assets using express-minify
+/*
+var minify = require('express-minify')
+app.use(function(req, res, next) {
+    res._uglifyMangle = false
+    res._uglifyCompress = false
+    next()
+});
+app.use(minify())
+*/
 
 // view engine setup
 app.set('views', path.join(__dirname, routes.publicFolderNm))

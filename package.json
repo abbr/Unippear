@@ -1,6 +1,6 @@
 {
   "name": "unippear",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "license": "MIT",
   "author": {
     "name": "Fred"
@@ -28,6 +28,7 @@
     "ejs": "~1.0.0",
     "etag": "~1.5.1",
     "express": "~4.10.6",
+    "express-minify": "^0.1.1",
     "morgan": "~1.1.1",
     "recursive-readdir": "~1.2.0",
     "serve-favicon": "~2.0.1",
