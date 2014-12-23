@@ -88,21 +88,21 @@ The version and theme a client website uses is determined by URL path of the loa
 
 The URL of an asset rendered by EJS template should not include the *.ejs* extension.
 
-As an example, suppose we imported a CSS asset from an existing website to file */public/assets/v1/theme1/css/header.css*, which maps to URL *//&lt;my-unippearHost&gt;/v1/theme1/css/header.css*. The file contains
+As an example, suppose we imported header HTML fragment from an existing website to file */public/assets/v1/theme1/header.html*, which maps to URL *//&lt;my-unippearHost&gt;/v1/theme1/header.html*. The file contains
 ```
-#logo {
-	background: url(/img/logo.png) no-repeat;
-}
+...
+<img alt="Logo" src="/img/logo.png">
+...
 ```
-When this CSS is served to a client website, */img/logo.png* will be relative to the host  of client website, not *Unippear*. To let *Unippear* take control of the logo file, first copy the logo to */public/assets/v1/theme1/img/logo.png*, then rename file *header.css* to *header.css.ext*, lastly change CSS to generate fully qualified logo URL:
+When this file is served to a client website, */img/logo.png* will be relative to the host  of client website, not *Unippear*. To let *Unippear* take control of the logo file, first copy the logo to */public/assets/v1/theme1/img/logo.png*, then rename file *header.html* to *header.html.ejs*, lastly change the content to generate fully qualified logo URL:
 ```
-#logo {
-	background: url(<%=unippearHost%><%=thisFileUrlPath%>/../img/logo.png) no-repeat;
-}
+...
+<img alt="Logo" src="<%=unippearHost%><%=thisFileUrlPath%>/img/logo.png">
+...
 ```
-The URL of *header.css* remains to be *//&lt;my-unippearHost&gt;/v1/theme1/css/header.css*.
+The URL of *header.html* remains to be *//&lt;my-unippearHost&gt;/v1/theme1/header.html*.
 
-*thisFileUrlPath* is set to */v1/theme1/css* in this context. Later on a new version, say *v2*, can be created by duplicating folder *v1* without changing the css because *thisFileUrlPath* will be */v2/theme1/css* in that context.
+*thisFileUrlPath* is set to */v1/theme1* in this context. Later on a new version, say *v2*, can be created by duplicating folder *v1* without changing the css because *thisFileUrlPath* will be */v2/theme1* in that context.
 
 ### Access Control
 Without access control, your branding can be easily spoofed. *Unippear* prevents unauthorized access by validating the incoming request against a whitelist in file */client-whitelist.json*. If *Referer* and/or *Origin* (used by CORS) request headers are supplied, they must match at least one RegEx patterns of the whitelist.
