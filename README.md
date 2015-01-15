@@ -113,7 +113,7 @@ After you have checked out live demo and familiarized with the topics described 
 1. [installing](#installation) *Unippear*
 2. replacing files in */public/assets* with your own assets. Devise a versioning and/or theming directory structure as you see fit.
 3. updating /client-whitelist.json with a list of authorized client URL patterns. Updates made at runtime in the future take effect immediately without restarting Node.
-4. launching *Unippear* by running `bin/www`. By default, the process listens on port 3000. To change port, either modify */bin/www* or set env PORT before launching node. Running *Node* as a service or setting up a front-end reverse proxy are beyond the scope of this document. It's easy to google a solution.
+4. launching *Unippear* by running command `node bin/www` from application root. By default, the process listens on port 3000. To change port, either modify */bin/www* or set env PORT before launching node. Running *Node* as a service or setting up a front-end reverse proxy are beyond the scope of this document. It's easy to google a solution.
 
 ### Serving
 *Unippear* layout is served by adding following Javascript to an authorized client website page:
@@ -175,8 +175,8 @@ It is assumed that the layout to be implemented as a service will be imported fr
 * A client site usually needs some regression test before upgrading to a new layout version. The *latest* symbolic link should be advertised precautiously unless you can guarantee backward compatibility.
 
 ## Installation
-If you have [Node](http://nodejs.org/) installed, simply run
-```npm install unippear```
+If you have [Node](http://nodejs.org/) installed, to download *Unippear* simply run command 
+```npm install unippear``` and application root is *./node_modules/unippear*. Feel free to move application root after download.
 
 ##License
 
