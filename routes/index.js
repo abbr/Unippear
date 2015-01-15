@@ -76,7 +76,7 @@ router.get(/^(.*)\/(index\.js)?$/, function(req, res) {
             var drecursive = deasync(recursive)
             try {
                 jsFiles = (drecursive(jsPath) || []).map(function(v) {
-                    return 'js/' + v.substring(jsPath.length).replace(/\.ejs$/, '')
+                    return 'js/' + v.substring(jsPath.length).replace(/\.ejs$/, '').replace(/\\/g, '/')
                 })
                 jsFiles.sort(fileCompare)
             }
