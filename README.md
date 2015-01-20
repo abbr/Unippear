@@ -81,7 +81,7 @@ Note a *latest* symbolic folder can be manually provided  pointing to latest ver
 The version and theme a client website uses is determined by URL path of the loader in client HTML document, as shown in [Serving](#serving) below.
 
 ### Templating
-*Unippear* uses [EJS](https://github.com/tj/ejs) template engine. EJS view folder is set to */public*. Any file in */public* can be converted to EJS template by appending file extension *.ejs* to the file name. An EJS template performs context substitution. In particular, *Unippear* supplies two context variables: 
+*Unippear* uses [EJS](https://github.com/tj/ejs) template engine. EJS view folder is set to */public*. Any file in */public* can be converted to EJS template by appending file extension *.ejs* to the file name (including original extension). An EJS template performs context substitution. In particular, *Unippear* supplies two context variables: 
 
 1. `unippearHost` set to  *&lt;protocol&gt;:// &lt;host_name&gt;:&lt;port&gt;* of *Unippear* service web app to allow emitting fully qualified URL. 
 2. `thisFileUrlPath` set to the URL path portion (excluding file name) of the template file to allow emitting relative URL. This variable is useful to support versioning and theming because the variable contains their names.
