@@ -100,9 +100,9 @@ When this file is served to a client website, */img/logo.png* will be relative t
 <img alt="Logo" src="<%=unippearHost%><%=thisFileUrlPath%>/img/logo.png">
 ...
 ```
-The URL of *header.html* remains to be *//&lt;my-unippearHost&gt;/v1/theme1/header.html*.
+The URL of *header.html.ejs* remains to be *//&lt;my-unippearHost&gt;/v1/theme1/header.html*.
 
-*thisFileUrlPath* is set to */v1/theme1* in this context. Later on a new version, say *v2*, can be created by duplicating folder *v1* without changing the css because *thisFileUrlPath* will be */v2/theme1* in that context.
+*thisFileUrlPath* is set to */v1/theme1* in this context. Later on a new version, say *v2*, can be created by duplicating folder *v1* without changing the content of *header.html.ejs* because *thisFileUrlPath* will be */v2/theme1* in that context.
 
 ### Access Control
 Without access control, your branding can be easily spoofed. *Unippear* prevents unauthorized access by validating the incoming request against a whitelist in file */client-whitelist.json*. If *Referer* and/or *Origin* (used by CORS) request headers are supplied, they must match at least one RegEx patterns of the whitelist.
