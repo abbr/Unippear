@@ -179,7 +179,7 @@ It is assumed that the layout to be implemented as a service will be imported fr
 If you have [Node](http://nodejs.org/) installed, to download *Unippear* simply run command 
 ```npm install unippear``` and application root is *./node_modules/unippear*. Feel free to move application root after download.
 
-##License
+## License
 
 The MIT License (MIT)
 
