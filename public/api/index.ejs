@@ -17,8 +17,8 @@ function unippear(opts) {
         cache: true
       })
       // download header and footer
-    var headerProm = $jQ.get(opts.headerHtmlFragment)
-    var footerProm = $jQ.get(opts.footerHtmlFragment)
+    var headerProm = $jQ.get(unippear.headerHtmlFragment)
+    var footerProm = $jQ.get(unippear.footerHtmlFragment)
       // download js
     $jQ.when( <%
       jsFiles.forEach(function(f, idx) { %>
