@@ -32,7 +32,10 @@ function unippear(opts) {
     ).done(function() {
       var i = 0
       while (i < <%= jsFiles.length %> ) {
-        $jQ.globalEval((arguments[i] instanceof Array) ? arguments[i][0] : arguments[i])
+        try{
+          $jQ.globalEval((arguments[i] instanceof Array) ? arguments[i][0] : arguments[i])
+        }
+        catch (err) {}
         i++
       }
       $jQ.when(headerProm).done(function(data) {
