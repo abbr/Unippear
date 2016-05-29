@@ -55,7 +55,7 @@ To maximize performance, all assets are downloaded in parallel. Furthermore, all
 The order of parsing assets is important. CSS and JS files should be named in their desired parsing order by, for example, prefixing file names with 0-left-padded digits such as 01_file1.js, 02_file2.js etc. To ensure event handler is defined before event is triggered, the loader postpones inserting header and footer into DOM only after all JS files have been downloaded and evaluated. 
 
 ### Versioning and Theming (Optional)
-Versioning and theming provide ways to partition and group assets under */public/assets*. However, *Unippear* doesn't recognize those concepts. Instead, it only recognizes folders. Versioning and theming are nothing but interpretations we gave to folder levels under *assets*. For example, in an implementation where multiple themes are provided under a version, the folder structure may look like:
+Versioning and theming provide ways to partition assets under */public/assets*. However, *Unippear* doesn't recognize those concepts. Instead, it only recognizes folders. Versioning and theming are nothing but interpretations we gave to folder levels under *assets*. For example, in an implementation where multiple themes are provided under a version, the folder structure may look like:
 
 ```
 public/assets/
