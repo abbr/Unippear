@@ -17,7 +17,7 @@ Large organizations often own many web sites, such as vanity sites, subsidiary s
 * Security: Only pre-registered client sites can use the service. 
 
 ## Live Demo
-Take a look at [live demo](https://unippear.herokuapp.com/test.html) hosted on Heroku.
+Take a look at [live demo](https://unippear.herokuapp.com/demo/test.html) hosted on Heroku.
 
 ## Description
 ### Structure
@@ -50,7 +50,7 @@ Take a look at [live demo](https://unippear.herokuapp.com/test.html) hosted on H
 3. *assets/&lt;version/theme&gt;/header.html* containing header HTML fragment loaded by calling [jQuery.get()](http://api.jquery.com/jquery.get/). By default header is prepended to document *&lt;body&gt;*. The container element can be changed by setting *headerContainer* option when client site invoking the loader. More about *headerContainer* option in [Customization](#customization) below.
 4. *assets/&lt;version/theme&gt;/footer.html*  containing footer HTML fragment loaded and inserted same way as *assets/&lt;version/theme&gt;/header.html* except that footer is appended to the container set by *footerContainer* option.
 
-To maximize performance, all assets are downloaded in parallel. Furthermore, all JS files are combined into one download by default. If individual JS download is desirable, say for debugging purpose, it can be enabled by toggling `routes.combineJs` to `false` in */app.js*.
+To maximize performance, all assets are downloaded in parallel. Furthermore, all JS files are combined into one download by default. If individual JS download is desirable, say for debugging purpose, it can be enabled by setting environment variable `UNIPPEAR_COMBINE_JS` to `false`.
 
 The order of parsing assets is important. CSS and JS files should be named in their desired parsing order by, for example, prefixing file names with 0-left-padded digits such as 01_file1.js, 02_file2.js etc. To ensure event handler is defined before event is triggered, the loader postpones inserting header and footer into DOM only after all JS files have been downloaded and evaluated. 
 
@@ -176,16 +176,21 @@ It is assumed that the layout to be implemented as a service will be imported fr
 * A client site usually needs some regression test before upgrading to a new layout version. The *latest* symbolic link should be advertised precautiously unless you can guarantee backward compatibility.
 
 ## Installation
-If you have [Node](http://nodejs.org/) installed, to download *Unippear* simply run command 
-```npm install unippear``` and application root is *./node_modules/unippear*. Feel free to move application root after download.
+Make sure you have latest version of [Node](http://nodejs.org/) installed.
 
-You can also clone *Unippear* and run `npm install`.
+```
+  git clone git@github.com:abbr/Unippear.git
+  cd Unippear
+  npm i -g yarn
+  yarn install
+``` 
+If you don't have `git`, you can also download [zip](https://github.com/abbr/Unippear/archive/master.zip) and extract.
 
 ## License
 
 The MIT License (MIT)
 
-Copyright (c) 2014 
+Copyright (c) 2014-Present
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
